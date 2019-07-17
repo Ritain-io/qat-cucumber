@@ -1,0 +1,11 @@
+smp: &smp
+  tnsnames: '(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.112.69.16)(PORT=1521)))(CONNECT_DATA=(SID=ptpieos0)))'
+  username: ''
+  password: ''
+
+care: *smp
+
+sdp1:
+  database: '10.112.69.15:1521:ptpieka'
+  username: ''
+  password: ''

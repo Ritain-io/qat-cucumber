@@ -1,0 +1,7 @@
+env_vars:
+  add:
+    - EXECUTOR_NUMBER
+    - JENKINS_URL
+  ignore:
+    - SVN_REVISION
+    - GIT_COMMIT

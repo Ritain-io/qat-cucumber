@@ -1,0 +1,9 @@
+sync:
+  host: 'localhost'
+  kill_if_failed: false
+  method: 'ssh' #or 'ssh' or 'http'
+  opts: #option for sync methods
+    user: 'oracle'
+    password: 'password'
+
+zone: "Lisbon" #As defined in http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html

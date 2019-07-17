@@ -1,0 +1,4 @@
+env_vars:
+  add:
+    - EXECUTOR_NUMBER
+    - JENKINS_URL

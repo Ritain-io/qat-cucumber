@@ -1,0 +1,11 @@
+sync:
+  host: 'sync.host.com'
+  kill_if_failed: false
+  method: 'ntp' #or 'ssh' or user defined method
+  #opts: #option for sync methods
+  #  username: ''
+  #  password: ''
+  #  port: 22 #default for SSH
+  #  command: 'date' #SSH only
+
+#zone: "Auckland" #As defined in http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html

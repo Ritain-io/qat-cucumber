@@ -1,0 +1,28 @@
+standard: &standard >
+  --format pretty
+  --format html --out public/index.html
+  --format junit --out public/
+  --strict
+  --tags ~@wip
+
+coverage: &coverage >
+  --format QAT::Formatter::Console
+  --format QAT::Formatter::ReqCoverage --out public/requirement_coverage.json
+  --format html --out public/index.html
+  --format junit --out public/
+  --strict
+  --tags ~@wip
+
+qat: &qat >
+  --format QAT::Formatter::Console
+  --format html --out public/index.html
+  --format junit --out public/
+  --strict
+  --tags ~@wip
+
+flat: &flat >
+  --format pretty
+  --strict
+  --tags ~@wip
+
+default: *standard

@@ -1,0 +1,61 @@
+{
+  "index_patterns": [
+    "errors-qat-*"
+  ],
+  "settings": {
+    "index": {
+      "analysis": {
+        "analyzer": {
+          "tags_analyser": {
+            "filter": ["lowercase"],
+            "type": "custom",
+            "tokenizer": "whitespace"
+          }
+        }
+      }
+    }
+  },
+  "mappings": {
+      "dynamic": true,
+      "dynamic_templates": [
+        {
+          "base": {
+            "mapping": {
+              "type": "keyword"
+            },
+            "match_mapping_type": "*",
+            "match": "*"
+          }
+        }
+      ],
+      "properties": {
+        "protocol": {
+          "type": "long"
+        },
+        "@timestamp": {
+          "format": "strict_date_optional_time||epoch_millis",
+          "type": "date"
+        },
+        "source_host": {
+          "type": "ip"
+        },
+        "BUILD_NUMBER": {
+          "type": "long"
+        },
+        "level": {
+          "type": "long"
+        },
+        "line": {
+          "type": "long"
+        },
+        "outline_number": {
+          "type": "long"
+        },
+        "tags": {
+          "analyzer": "tags_analyser",
+          "type": "text"
+        }
+      }
+  },
+  "aliases": {}
+}

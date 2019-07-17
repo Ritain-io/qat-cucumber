@@ -1,0 +1,15 @@
+sync:
+  host: 'localhost'
+  kill_if_failed: false
+  method: 'ntp' #or 'ssh' or 'http'
+  #opts: #option for sync methods
+  #  username: ''
+  #  password: ''
+  #  port: 22 #80 default for HTTP
+  #  command: 'date' #SSH only
+  #  path: '/time' #HTTP only
+  #  method: 'GET' #HTTP only
+  #  headers: {} #HTTP only
+  #  body: '' #HTTP only
+
+zone: "Lisbon" #As defined in http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html

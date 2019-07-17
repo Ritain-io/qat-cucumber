@@ -1,0 +1,38 @@
+log4r_config:
+
+  loggers:
+    - name: QAT::Formatter
+      level: 'ALL'
+      outputters:
+        - qat_console_outputter
+
+    - name: QAT::Formatter::ReqCoverage
+      level: 'ALL'
+      outputters:
+        - ReqCoverage
+
+  outputters:
+    - type: QatConsoleOutputter
+      name: qat_console_outputter
+
+    - type: QatRemoteOutputter
+      name: ReqCoverage
+      gelf_server: "127.0.0.1"
+      gelf_port: 12202
+      facility: 'QAT Requirement Coverage'
+      formatter:
+        type: PatternFormatter
+        pattern: "%m"
+
+
+#    - type : QatRemoteOutputter
+#      name : ReqCoverage
+#      server: "127.0.0.1"
+#      port: 8083
+#      facility: 'QAT Requirement Coverage'
+#      formatter:
+#        type : PatternFormatter
+#        pattern: "%m"
+
+        #12201
+

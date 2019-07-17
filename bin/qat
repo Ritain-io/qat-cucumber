@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+#encoding: utf-8
+
+require 'qat/cli/main'
+QAT::CLI::Main.new(ARGV.dup).execute!
