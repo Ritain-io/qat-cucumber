@@ -2,7 +2,7 @@
 
 # QAT::Cucumber
 
-- Welcome to the Qat Cucumber gem!
+- Welcome to the QAT Cucumber gem!
 
 - This gem support different types of features to 
 quickest start a new project, log the failures and help with maintenance of the project:
@@ -70,8 +70,8 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/qa-toolkit/qat-cucumber. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/readiness-it/qat-cucumber. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## Code of Conduct
 
-Everyone interacting in the Qat::Soap project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/qa-toolkit/qat-cucumber/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the QAT::Cucumber project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/readiness-it/qat-cucumber/blob/master/CODE_OF_CONDUCT.md).
