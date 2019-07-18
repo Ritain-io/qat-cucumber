@@ -18,7 +18,7 @@ jobs:
     - name: "unit tests"
       script: bundle exec rake qat:devel:tests:run
 
-    - name: "build gem"
+    - name: "gem build"
       script: gem build *.gemspec
 
     - stage: release
