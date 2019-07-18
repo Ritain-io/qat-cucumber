@@ -1,4 +1,6 @@
-# Qat::Cucumber
+[![Build Status](https://travis-ci.org/readiness-it/qat-cucumber.svg?branch=master)](https://travis-ci.org/readiness-it/qat-cucumber)
+
+# QAT::Cucumber
 
 - Welcome to the Qat Cucumber gem!
 
