@@ -3,6 +3,9 @@ language: ruby
 rvm:
   - 2.5
 
+services:
+  - docker
+
 stages:
   - test
   - release
@@ -23,7 +26,12 @@ jobs:
       if: tag IS blank
 
     - name: "unit tests"
-      script: bundle exec rake qat:devel:tests:run
+      env: ELK_VERSION=7.2.0 ES_USER=elastic ES_PASSWD=changeme
+      script:
+        - docker-compose up -d
+        - until curl --user "$ES_USER:$ES_PASSWD" --silent -XGET --fail http://localhost:9200; do printf '.'; sleep 1; done
+        - until curl --user "$ES_USER:$ES_PASSWD" --silent -XGET --fail http://localhost:9600; do printf '.'; sleep 1; done
+        - bundle exec rake qat:devel:tests:run
       if: tag IS blank
 
     - name: "gem build"
