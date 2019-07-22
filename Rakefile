@@ -18,7 +18,7 @@ namespace :qat do
         @development_dependencies = spec.development_dependencies
 
         File.write 'Gemfile.example', ERB.new(<<ERB).result
-source 'http://vps316412.ovh.net:8082/nexus/repository/rit-ruby/'
+source 'https://rubygems.org'
 
 gem '<%= @gem_name %>', '<%= @gem_version %>'
 <% @development_dependencies.each do |dependency| %>gem '<%= dependency.name %>', '<%= dependency.requirements_list.reverse.join "', '"%>'
@@ -29,7 +29,7 @@ ERB
       desc 'Generate default gemfile'
       task :default do
         File.write 'Gemfile.default', <<GEMFILE
-source 'http://vps316412.ovh.net:8082/nexus/repository/rit-ruby/'
+source 'https://rubygems.org'
 
 gemspec
 GEMFILE
