@@ -65,6 +65,7 @@ module QAT
             when :after_step
               log.info "Step Done!" if @step_running
             when :before_scenario
+              before_test_case step unless @current_feature
               log.info { "Running #{@current_scenario.keyword}: \"#{format_scenario_name step}\"" }
             when :before_step
               log.info "Step Done!\n" if @step_running
