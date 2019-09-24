@@ -64,7 +64,7 @@ rake qat:list:untagged
 
 # Documentation
 
-- [API documentation](https://readiness-it.github.io/qat-cucumber/doc/index.html)
+- [API documentation](https://readiness-it.github.io/qat-cucumber/)
 
 
 ## Development
