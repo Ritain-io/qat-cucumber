@@ -1,10 +1,4 @@
 source 'https://rubygems.org'
 
 # QAT is a Cucumber-based toolkit for automating tests. (https://github.com/readiness-it/qat-cucumber)
-gem 'qat-cucumber', '~> 6.0',
-
-# QAT-Web is a browser controller for Web testing (https://github.com/readiness-it/qat-web)
-#gem 'qat-web', '~> 6.0'
-
-# The next generation developer focused tool for automated testing of webapps (https://github.com/seleniumhq/selenium)
-#gem 'selenium-webdriver'
+gem 'qat-cucumber', '~> 6.0'
