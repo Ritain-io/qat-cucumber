@@ -1,5 +1,5 @@
 sync:
-  host: 'sync.host.com'
+  host: 'pool.ntp.org'
   kill_if_failed: false
   method: 'ntp' #or 'ssh' or user defined method
   #opts: #option for sync methods
