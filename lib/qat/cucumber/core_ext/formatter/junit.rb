@@ -30,7 +30,7 @@ module Cucumber
         name = scenario_designation
 
         @current_feature_data[:builder].testcase(:classname => classname, :name => name, :time => "%.3f" % duration) do
-          if !result.passed? && result.ok?(@config.strict?)
+          if !result.passed? && result.ok?(@config.strict)
             @current_feature_data[:builder].skipped
             @current_feature_data[:skipped] += 1
           elsif !result.passed?
@@ -43,10 +43,10 @@ module Cucumber
             @current_feature_data[:failures] += 1
           end
           @current_feature_data[:builder].tag!('system-out') do
-            @current_feature_data[:builder].cdata! strip_control_chars(@interceptedout.buffer.join)
+            @current_feature_data[:builder].cdata! strip_control_chars(@interceptedout.buffer_string.join)
           end
           @current_feature_data[:builder].tag!('system-err') do
-            @current_feature_data[:builder].cdata! strip_control_chars(@interceptederr.buffer.join)
+            @current_feature_data[:builder].cdata! strip_control_chars(@interceptederr.buffer_string.join)
           end
         end
         @current_feature_data[:tests] += 1
