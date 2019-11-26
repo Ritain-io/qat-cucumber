@@ -3,7 +3,7 @@ standard: &standard >
   --format html --out public/index.html
   --format junit --out public/
   --strict
-  --tags ~@wip
+  --tags 'not @wip'
 
 coverage: &coverage >
   --format QAT::Formatter::Console
@@ -11,18 +11,18 @@ coverage: &coverage >
   --format html --out public/index.html
   --format junit --out public/
   --strict
-  --tags ~@wip
+  --tags 'not @wip'
 
 qat: &qat >
   --format QAT::Formatter::Console
   --format html --out public/index.html
   --format junit --out public/
   --strict
-  --tags ~@wip
+  --tags 'not @wip'
 
 flat: &flat >
   --format pretty
   --strict
-  --tags ~@wip
+  --tags 'not @wip'
 
 default: *standard
