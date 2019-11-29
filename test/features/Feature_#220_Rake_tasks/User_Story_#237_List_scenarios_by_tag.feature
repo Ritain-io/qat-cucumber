@@ -14,6 +14,8 @@ Feature: Feature #220: Rake tasks; User Story #237: List scenarios by tag
     Then the output should match:
     """
     ^Disabling profiles...
+    WARNING: The formatter QAT::Formatter::Scenario::Name is using the deprecated formatter API which will be removed in v4.0 of Cucumber.
+
     true: features/tests.feature:5
     Many trues: features/tests.feature:10\s*$
     """

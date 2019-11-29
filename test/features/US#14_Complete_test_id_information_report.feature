@@ -15,6 +15,8 @@ Feature: Complete test id information report
     Then the output should match:
     """
     Disabling profiles...
+    WARNING: The formatter QAT::Formatter::TestIds is using the deprecated formatter API which will be removed in v4.0 of Cucumber.
+
     ------------------------------------
     Duplicate test ids found!
     ------------------------------------

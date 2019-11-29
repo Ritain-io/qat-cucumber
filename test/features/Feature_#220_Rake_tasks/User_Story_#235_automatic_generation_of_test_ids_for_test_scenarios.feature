@@ -43,10 +43,12 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     Then the output should match:
     """
     ^Disabling profiles...
+    WARNING: The formatter QAT::Formatter::TestIds is using the deprecated formatter API which will be removed in v4.0 of Cucumber.
+
     Giving test ids to scenarios:
     {
-     "features/example1.feature": \[  8,  13\],
-     "features/some_folder/example2.feature": \[  5,  11\]
+     "features/example1.feature": \[8,13\],
+     "features/some_folder/example2.feature": \[5,11\]
     }
     """
     And a file named "./public/test_ids.json" should contain:
@@ -79,10 +81,12 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     And the output should match:
     """
     ^Disabling profiles...
+    WARNING: The formatter QAT::Formatter::TestIds is using the deprecated formatter API which will be removed in v4.0 of Cucumber.
+
     Giving test ids to scenarios:
     {
-     "features/example1.feature": \[  8,  13\],
-     "features/some_folder/example2.feature": \[  5,  11\]
+     "features/example1.feature": \[8,13\],
+     "features/some_folder/example2.feature": \[5,11\]
     }
     """
     When I run `rake qat:tags:report_test_ids`
@@ -158,10 +162,12 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     Then the output should match:
     """
     ^Disabling profiles...
+    WARNING: The formatter QAT::Formatter::TestIds is using the deprecated formatter API which will be removed in v4.0 of Cucumber.
+
     Giving test ids to scenarios:
     {
-     "features/example1.feature": \[  8,  13\],
-     "features/example2.feature": \[  9\]
+     "features/example1.feature": \[8,13\],
+     "features/example2.feature": \[9\]
     }
     """
     And a file named "./public/test_ids.json" should contain:
@@ -197,10 +203,12 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     And the output should match:
     """
     ^Disabling profiles...
+    WARNING: The formatter QAT::Formatter::TestIds is using the deprecated formatter API which will be removed in v4.0 of Cucumber.
+
     Giving test ids to scenarios:
     {
-     "features/example1.feature": \[  8,  13\],
-     "features/example2.feature": \[  9\]
+     "features/example1.feature": \[8,13\],
+     "features/example2.feature": \[9\]
     }
     """
     When I run `rake qat:tags:report_test_ids`
@@ -269,6 +277,8 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     Then the output should match:
     """
     ^Disabling profiles...
+    WARNING: The formatter QAT::Formatter::TestIds is using the deprecated formatter API which will be removed in v4.0 of Cucumber.
+
     There are no scenarios without test id.
     """
     And a file named "public/test_ids.json" should contain:
@@ -318,6 +328,8 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     Then the output should match:
     """
     ^Disabling profiles...
+    WARNING: The formatter QAT::Formatter::TestIds is using the deprecated formatter API which will be removed in v4.0 of Cucumber.
+
     There are no scenarios without test id.
     """
     And a file named "./public/test_ids.json" should contain:
