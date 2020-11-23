@@ -1,13 +1,13 @@
 Given /^true$/ do
   log.debug "true"
   puts "true"
-  assert true
+  expect true
 end
 
 Given /^false$/ do
   log.debug "false"
   puts "false"
-  assert false
+  expect false
 end
 
 Given /^pending$/ do

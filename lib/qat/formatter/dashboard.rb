@@ -62,7 +62,7 @@ module QAT
 
         begin_test_step step do |type|
           if type == :before_step
-            @step_name = "#{step.source.last.keyword}#{step.name}"
+            @step_name = "#{step.source.last.keyword}#{step.to_s}"
             mdc_add_step! @step_name
           elsif :before_scenario
             outline_number, outline_example = nil, nil

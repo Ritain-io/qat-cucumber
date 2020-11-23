@@ -69,7 +69,7 @@ module QAT
               log.info { "Running #{@current_scenario.keyword}: \"#{format_scenario_name step}\"" }
             when :before_step
               log.info "Step Done!\n" if @step_running
-              step_name = "#{step.source.last.keyword}#{step.name}"
+              step_name = "#{step.source.last.keyword}#{step.to_s}"
               log.info { "Step \"#{step_name}\"" }
               mdc_add_step! step_name
           end

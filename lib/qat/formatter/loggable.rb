@@ -33,13 +33,13 @@ module QAT
       #@since 0.1.0
       def begin_test_step step
         #World: step.location = /usr/local/rvm/gems/ruby-2.2.3/gems/cucumber-2.0.2/lib/cucumber/filters/prepare_world.rb:27
-        # step.name = "Before hook"
+        # step.to_s = "Before hook"
 
         #Hooks: step.location = /home/mgomes/Projects/qat/src/qat/lib/qat/cucumber/hooks.rb:53
-        # step.name = "Before hook"
+        # step.to_s = "Before hook"
 
         #Stepdef: step.location = features/formatter.feature:8
-        # step.name = step name
+        # step.to_s = step name
 
         type = set_type(step)
 
@@ -66,7 +66,7 @@ module QAT
 
       def set_type(step)
         location  = step.location.file.to_s
-        step_name = step.name
+        step_name = step.to_s
 
         if step_name == "After hook"
           :after_step
