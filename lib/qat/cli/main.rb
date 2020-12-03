@@ -25,7 +25,7 @@ class QAT::CLI::Main
     handle_options if @options.any?
 
   rescue ArgumentError, OptionParser::MissingArgument => exception
-    @stderr.Kernel.puts "Error: #{exception.message}"
+    @stderr.puts "Error: #{exception.message}"
     @exit_code = 1
   ensure
     @kernel.exit(exit_code)
@@ -76,12 +76,12 @@ class QAT::CLI::Main
     end
 
     parser.on('-v', '--version', 'Show QAT-Cucumber version') do
-      @stdout.Kernel.puts QAT::Cucumber::VERSION
+      @stdout.puts QAT::Cucumber::VERSION
       @exit_code = 0
     end
 
     parser.on('-h', '--help', 'Show this helper') do
-      @stdout.Kernel.puts parser.help
+      @stdout.puts parser.help
       @exit_code = 0
     end
   end
@@ -95,8 +95,8 @@ class QAT::CLI::Main
   def list_available_modules
     modules = QAT::CLI.list_extentions
 
-    @stdout.Kernel.puts 'List of available modules:'
+    @stdout.puts 'List of available modules:'
     names = modules.map { |module_name| "\t#{module_name}" }
-    @stdout.Kernel.puts names.join("\n")
+    @stdout.puts names.join("\n")
   end
 end

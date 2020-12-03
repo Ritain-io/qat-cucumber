@@ -42,7 +42,7 @@ GEMFILE
         Dir.chdir(File.join File.dirname(__FILE__), 'test', 'public') do
           (Dir.entries(Dir.pwd) - ['.', '..', '.keep', '.gitkeep']).each do |file|
             File.delete file
-            Kernel.puts "Deleted #{file}"
+            puts "Deleted #{file}"
           end
         end
       end
