@@ -20,10 +20,8 @@ module QAT
 
       #@api private
       def initialize(config,options)
-        @config = config
-        @io = config.out_stream
-        @options = options
-        ensure_outputter @io unless config.dry_run?
+        @config            = config
+        @io                = ensure_io(config.out_stream, config.error_stream)
       end
 
 

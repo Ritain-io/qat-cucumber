@@ -3,7 +3,6 @@ require 'cucumber'
 require 'qat/logger'
 require 'cucumber/core/gherkin/writer'
 require 'cucumber/formatter/ast_lookup'
-require_relative '../core_ext/running_test_case'
 require 'cucumber/formatter/json'
 
 module QAT
