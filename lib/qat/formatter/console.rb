@@ -1,7 +1,9 @@
 require 'fileutils'
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'
+require 'cucumber/formatter/ast_lookup'
 require 'cucumber/gherkin/formatter/escaping'
+require 'cucumber/deprecate'
 require 'qat/logger'
 require_relative 'loggable'
 
@@ -15,87 +17,138 @@ module QAT
       include ::FileUtils
       include ::Cucumber::Formatter::Io
       include ::Cucumber::Gherkin::Formatter::Escaping
+      include ::Cucumber::Formatter
       include QAT::Formatter::Loggable
       include QAT::Logger
 
       #@api private
-      def initialize(_, path_or_io, options)
-        @options = options
+      def initialize(config)
+        @config            = config
+        @io                = ensure_io(config.out_stream, config.error_stream)
+        @ast_lookup        = ::Cucumber::Formatter::AstLookup.new(config)
+        @feature_hashes    = []
+        config.on_event :test_case_started, &method(:on_test_case_started)
+        config.on_event :test_case_finished, &method(:on_test_case_finished)
+        config.on_event :test_step_started, &method(:on_test_step_started)
+        config.on_event :test_step_finished, &method(:on_test_step_finished)
+        config.on_event :test_run_finished, &method(:on_test_run_finished)
+      end
 
-        check_outputter path_or_io unless options[:dry_run]
+      def build (test_case, ast_lookup)
+        @background_hash = nil
+        uri              = test_case.location.file
+        feature          = ast_lookup.gherkin_document(uri).feature
+        feature(feature, uri)
+        background(feature.children.first.background) unless feature.children.first.background.nil?
+        scenario(ast_lookup.scenario_source(test_case), test_case)
       end
 
       #@api private
-      def before_test_case test_case
-        return if @options[:dry_run]
-
+      def on_test_case_started event
+        return if @config.dry_run?
+        test_case = event.test_case
+        build(test_case, @ast_lookup)
         unless @current_feature
-          @current_feature = test_case.source[0]
-          log.info { "Running #{@current_feature.keyword}: \"#{@current_feature.name}\"" }
-          mdc_before_feature! @current_feature.name
+          @current_feature = @feature_hash
+          log.info { "Running #{@current_feature[:keyword]}: \"#{@current_feature[:name]}\"" }
+          mdc_before_feature! @current_feature[:name]
         end
-
-        @current_scenario = test_case.source[1]
+        @current_scenario = @scenario
       end
 
       #@api private
-      def after_feature *_
-        return if @options[:dry_run]
+      def on_test_case_finished event
+        return if @config.dry_run?
+        _test_case, result = *event.attributes
+        result.to_sym
+        log.info { "Finished #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\" - #{result}\n" } if @current_scenario
+      end
 
-        log.info { "Finished #{@current_feature.keyword}: \"#{@current_feature.name}\"" }
+      #@api private
+      def on_test_run_finished event
+        return if
+          @config.dry_run?
+        _test_case = *event.attributes
+        log.info { "Finished #{@current_feature[:keyword]}: \"#{@current_feature[:name]}\"" }
         @current_feature = nil
         mdc_after_feature!
+        end
+
+
+      def on_test_step_finished(event)
+        test_step, result = *event.attributes
+        return if test_step.location.file.include?('lib/qat/cucumber/')
+        log.info "Finished Step #{test_step}, #{result} "
+        @any_step_failed = true if result.failed?
       end
 
-      #@api private
-      def after_test_case step, result
-        return if @options[:dry_run]
-
-        log.error { result.exception } if result.failed?
-
-        log.info { "Finished #{@current_scenario.keyword}: \"#{format_scenario_name step}\" - #{result.to_sym}\n" } if @current_scenario
+      def on_test_step_started(event)
+        return if @config.dry_run?
+        test_step = event.test_step
+        return if test_step.location.file.include?('lib/qat/cucumber/')
+        log.info { "Running Step \"#{test_step.text}\"" }
       end
 
-      #@api private
-      def before_test_step step
-        return if @options[:dry_run]
 
-        begin_test_step step do |type|
-          case type
-            when :after_step
-              log.info "Step Done!" if @step_running
-            when :before_scenario
-              before_test_case step unless @current_feature
-              log.info { "Running #{@current_scenario.keyword}: \"#{format_scenario_name step}\"" }
-            when :before_step
-              log.info "Step Done!\n" if @step_running
-              step_name = "#{step.source.last.keyword}#{step.to_s}"
-              log.info { "Step \"#{step_name}\"" }
-              mdc_add_step! step_name
-          end
+      private
+
+      def background(background)
+        @background_hash = {
+          keyword:     background.keyword,
+          name:        background.name,
+          description: background.description.nil? ? '' : background.description,
+          line:        background.location.line,
+          type:        'background'
+        }
+      end
+
+
+      def feature (feature, uri)
+        @feature_hash = {
+          id:          feature.name,
+          uri:         uri,
+          keyword:     feature.keyword,
+          name:        feature.name,
+          description: feature.description.nil? ? '' : feature.description,
+          line:        feature.location.line
+        }
+        return if feature.tags.empty?
+        tags_array = []
+        feature.tags.each { |tag| tags_array << { name: tag.name, line: tag.location.line } }
+        @feature_hash[:tags] = tags_array
+      end
+
+      def scenario(scenario_source, test_case)
+        scenario  = scenario_source.type == :Scenario ? scenario_source.scenario : scenario_source.scenario_outline
+        @scenario = {
+          id:          "#{@feature_hash[:id]};#{create_id_from_scenario_source(scenario_source)}",
+          keyword:     scenario.keyword,
+          name:        test_case.name,
+          description: scenario.description.nil? ? '' : scenario.description,
+          line:        test_case.location.lines.max,
+          type:        'scenario'
+        }
+        return if test_case.tags.empty?
+        tags_array = []
+        test_case.tags.each { |tag| tags_array << { name: tag.name, line: tag.location.line } }
+        @scenario[:tags] = tags_array
+      end
+
+      def create_id_from_scenario_source(scenario_source)
+        if scenario_source.type == :Scenario
+          scenario_source.scenario.name
+        else
+          scenario_outline_name = scenario_source.scenario_outline.name
+          examples_name         = scenario_source.examples.name
+          row_number            = calculate_row_number(scenario_source)
+          "#{scenario_outline_name};#{examples_name};#{row_number}"
         end
       end
 
-      #@api private
-      def puts obj
-        return if @options[:dry_run]
-
-        log.debug { obj }
-      end
-
-      private
-      def format_scenario_name step
-        return '' unless @current_scenario
-        outline_number, outline_example = nil, nil
-        scenario_name                   = if @current_scenario.is_a? ::Cucumber::Core::Ast::ScenarioOutline
-                                            outline_example = step.source[3].values
-                                            outline_number  = calculate_outline_id(step)
-                                            "#{@current_scenario.name} ##{outline_number}"
-                                          else
-                                            @current_scenario.name
-                                          end
-        mdc_before_scenario! @current_scenario.name, tags_from_test_step(step), outline_number, outline_example
-        return scenario_name
+      def calculate_row_number(scenario_source)
+        scenario_source.examples.table_body.each_with_index do |row, index|
+          return index + 2 if row == scenario_source.row
+        end
       end
     end
   end

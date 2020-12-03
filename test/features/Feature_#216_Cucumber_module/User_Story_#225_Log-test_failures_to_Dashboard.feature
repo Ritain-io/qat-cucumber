@@ -18,7 +18,6 @@ Feature: Feature #216: Cucumber module: User Story #225: Log test failures to Da
       | variable      | value                                        |
       | CUCUMBER_OPTS | --dry-run --format QAT::Formatter::Dashboard |
     When I run `rake formatter_tests`
-    Then the stdout should contain "WARNING: The formatter QAT::Formatter::Dashboard is using the deprecated formatter API which will be removed in v4.0 of Cucumber."
     And the exit status should be 0
 
   @test#17

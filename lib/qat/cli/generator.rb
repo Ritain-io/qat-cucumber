@@ -33,12 +33,12 @@ module QAT::CLI
     # Adds a QAT module to the current project
     # @param name [String] name of module to add
     def add_module(name)
-      @stdout.puts "Adding module #{name}" if @sub_options[:verbose]
+      @stdout.Kernel.puts "Adding module #{name}" if @sub_options[:verbose]
       begin
         QAT::CLI.add_module name, @stdout, @sub_options
-        @stdout.puts "Module #{name} added to #{Dir.getwd.split(::File::SEPARATOR).last}"
+        @stdout.Kernel.puts "Module #{name} added to #{Dir.getwd.split(::File::SEPARATOR).last}"
       rescue => exception
-        @stderr.puts "Error adding module #{name}: #{exception.message}"
+        @stderr.Kernel.puts "Error adding module #{name}: #{exception.message}"
         @exit_code = 1
       end
     end

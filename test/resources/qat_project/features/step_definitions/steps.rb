@@ -1,19 +1,27 @@
-Given /^true$/ do
+Given(/^true$/) do
   log.debug "true"
-  puts "true"
+  Kernel.puts "true"
   expect true
 end
 
-Given /^false$/ do
+Given (/^false$/) do
   log.debug "false"
-  puts "false"
+  Kernel.puts "false"
   expect false
 end
 
-Given /^pending$/ do
+Given (/^pending$/) do
   log.debug "pending"
-  puts "pending"
+  Kernel.puts "pending"
   pending
+end
+
+Given(/^I caught (\d+) red balls$/) do |balls|
+  @value= balls
+end
+
+Then(/^i have (\d+) red balls$/) do |arg|
+ assert_equal arg , @value , "Value isn't equal"
 end
 
 Given /^log "([^"]*)"$/ do |text|

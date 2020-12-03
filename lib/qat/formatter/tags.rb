@@ -70,7 +70,7 @@ module QAT
                     { unique: @tags.uniq.sort,
                       total:  @tags.size }
         }
-        @io.puts(content.to_json({
+        @io.Kernel.puts(content.to_json({
                                    indent:    ' ',
                                    space:     ' ',
                                    object_nl: "\n"

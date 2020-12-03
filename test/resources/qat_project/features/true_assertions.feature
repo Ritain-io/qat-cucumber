@@ -2,15 +2,15 @@
 Feature: true assertion tests
 
   Scenario: true
-    When true
-    Then true
+    Given I caught 3 red balls
+    Then i have 3 red balls
 
-  Scenario Outline: Many trues
-    When <true>
-    Then <true>
-
-  Examples:
-    | true |
-    | true |
-    | true |
+#  Scenario Outline: Many trues
+#    When <true>
+#    Then <true>
+#
+#  Examples:
+#    | true |
+#    | true |
+#    | true |
 

@@ -79,10 +79,10 @@ module QAT
           ------------------------------------
           #{dups_info.join("\n")}
           TXT
-          puts duplicates_info
+          Kernel.puts duplicates_info
         end
 
-        @io.puts(content.to_json({
+        @io.Kernel.puts(content.to_json({
                                    indent:    ' ',
                                    space:     ' ',
                                    object_nl: "\n"

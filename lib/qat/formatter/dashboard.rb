@@ -4,7 +4,7 @@ require 'cucumber/formatter/io'
 require 'cucumber/gherkin/formatter/escaping'
 require 'qat/logger'
 require_relative 'loggable'
-
+require 'cucumber/core/gherkin/writer'
 module QAT
   module Formatter
     # Formatter to send error information to a Dashboard server. Output should be configured in the logger file.
@@ -14,20 +14,22 @@ module QAT
       include ::FileUtils
       include ::Cucumber::Formatter::Io
       include ::Cucumber::Gherkin::Formatter::Escaping
+      include ::Cucumber::Core::Gherkin::Writer
       include QAT::Formatter::Loggable
       include QAT::Logger
 
       #@api private
-      def initialize(_, path_or_io, options)
+      def initialize(config,options)
+        @config = config
+        @io = config.out_stream
         @options = options
-
-        ensure_outputter path_or_io unless options[:dry_run]
+        ensure_outputter @io unless config.dry_run?
       end
 
 
       #@api private
       def before_test_case test_case
-        return if @options[:dry_run]
+        return if @config.dry_run?
 
         unless @current_feature
           @current_feature = test_case.source[0]
@@ -39,7 +41,7 @@ module QAT
 
       #@api private
       def after_feature *_
-        return if @options[:dry_run]
+        return if @config.dry_run?
 
         @current_feature = nil
         mdc_after_feature!
@@ -47,7 +49,7 @@ module QAT
 
       #@api private
       def after_test_case step, passed
-        return if @options[:dry_run]
+        return if @config.dry_run?
 
         if passed.respond_to? :exception
           mdc_add_step! @step_name
@@ -58,7 +60,7 @@ module QAT
 
       #@api private
       def before_test_step step
-        return if @options[:dry_run]
+        return if @config.dry_run?
 
         begin_test_step step do |type|
           if type == :before_step
@@ -66,7 +68,7 @@ module QAT
             mdc_add_step! @step_name
           elsif :before_scenario
             outline_number, outline_example = nil, nil
-            if @current_scenario.is_a? ::Cucumber::Core::Ast::ScenarioOutline
+            if @current_scenario.is_a? ::Cucumber::Core::Gherkin::ScenarioOutline
               outline_example = step.source[3].values
               outline_number  = calculate_outline_id(step)
             end

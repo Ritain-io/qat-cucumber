@@ -25,16 +25,16 @@ Gem::Specification.new do |gem|
 
   gem.executables.push('qat')
 
-  gem.required_ruby_version = '~> 2.3'
+  gem.required_ruby_version = '~> 2.5'
 
-  gem.add_dependency 'cucumber', '~> 3.0'
+  gem.add_dependency 'cucumber', '~> 5.2.0'
 
   gem.add_dependency 'rake'
   gem.add_dependency 'activesupport'
   gem.add_development_dependency 'nokogiri'
 
-  gem.add_dependency 'qat-core', '~> 7.0'
+  gem.add_dependency 'qat-core', '~> 8.0'
 
-  gem.add_development_dependency 'qat-devel', '~> 7.0'
+  gem.add_development_dependency 'qat-devel', '~> 8.0'
   gem.add_development_dependency 'httparty', '~> 0.15'
 end

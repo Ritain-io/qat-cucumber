@@ -24,7 +24,7 @@ module QAT
             end
             @scenarios[file_colon_line] = name
           else
-            puts "#{name}: #{file_colon_line}"
+            Kernel.puts "#{name}: #{file_colon_line}"
           end
         end
 
@@ -34,7 +34,7 @@ module QAT
               scenarios: @scenarios,
               repeated:  @repeated
             }
-            @io.puts(content.to_json({
+            @io.Kernel.puts(content.to_json({
                                        indent:    ' ',
                                        space:     ' ',
                                        object_nl: "\n"

@@ -36,7 +36,7 @@ module QAT
         end
         meth.call stdout, opts
       else
-        stdout.puts "Nothing to add in #{mod}"
+        stdout.Kernel.puts "Nothing to add in #{mod}"
       end
     end
 
