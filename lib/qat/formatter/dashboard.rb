@@ -19,66 +19,140 @@ module QAT
       include QAT::Logger
 
       #@api private
-      def initialize(config,options)
-        @config            = config
-        @io                = ensure_io(config.out_stream, config.error_stream)
+      def initialize(config)
+        @config = config
+        @io     = ensure_io(config.out_stream, config.error_stream)
+        ensure_outputter config.out_stream
+        @ast_lookup     = ::Cucumber::Formatter::AstLookup.new(config)
+        @feature_hashes = []
+
+        config.on_event :test_case_started, &method(:on_test_case_started)
+        config.on_event :test_case_finished, &method(:on_test_case_finished)
+        config.on_event :test_step_started, &method(:on_test_step_started)
       end
 
+      def build (test_case, ast_lookup)
+        @background_hash = nil
+        uri              = test_case.location.file
+        feature          = ast_lookup.gherkin_document(uri).feature
+        feature(feature, uri)
+        background(feature.children.first.background) unless feature.children.first.background.nil?
+        scenario(ast_lookup.scenario_source(test_case), test_case)
+      end
 
       #@api private
-      def before_test_case test_case
+      def on_test_case_started event
         return if @config.dry_run?
-
+        test_case = event.test_case
+        build(test_case, @ast_lookup)
         unless @current_feature
-          @current_feature = test_case.source[0]
-          mdc_before_feature! @current_feature.name
+          @current_feature = @feature_hash
+          mdc_before_feature! @current_feature[:name]
         end
 
-        @current_scenario = test_case.source[1]
+        @current_scenario = @scenario
+        mdc_before_scenario! @current_scenario[:name], @current_scenario[:tags], @row_number, @examples_values
+
       end
 
       #@api private
-      def after_feature *_
+      def on_test_case_finished event
         return if @config.dry_run?
-
+        _test_case, result = *event.attributes
+        result.to_sym
+        if result == :failed
+          mdc_add_step! @test_step
+          mdc_add_status_failed!
+          log.error { result.exception }
+        end
         @current_feature = nil
         mdc_after_feature!
       end
 
-      #@api private
-      def after_test_case step, passed
-        return if @config.dry_run?
 
-        if passed.respond_to? :exception
-          mdc_add_step! @step_name
-          mdc_add_status_failed!
-          log.error passed.exception
+      def on_test_step_started(event)
+        return if @config.dry_run?
+        @examples_values = []
+        @test_step = event.test_step
+        return if @test_step.location.file.include?('lib/qat/cucumber/')
+        mdc_add_step! @test_step.text
+        mdc_before_scenario! @current_scenario[:name],  @current_scenario[:tags]
+      end
+
+
+      private
+
+      def background(background)
+        @background_hash = {
+          keyword:     background.keyword,
+          name:        background.name,
+          description: background.description.nil? ? '' : background.description,
+          line:        background.location.line,
+          type:        'background'
+        }
+      end
+
+
+      def feature (feature, uri)
+        @feature_hash = {
+          id:          feature.name,
+          uri:         uri,
+          keyword:     feature.keyword,
+          name:        feature.name,
+          description: feature.description.nil? ? '' : feature.description,
+          line:        feature.location.line
+        }
+        return if feature.tags.empty?
+        tags_array = []
+        feature.tags.each { |tag| tags_array << tag.name }
+        @feature_hash[:tags] = tags_array
+      end
+
+      def scenario(scenario_source, test_case)
+        scenario  = scenario_source.type == :Scenario ? scenario_source.scenario : scenario_source.scenario_outline
+        @scenario = {
+          id:          "#{@feature_hash[:id]};#{create_id_from_scenario_source(scenario_source)}",
+          keyword:     scenario.keyword,
+          name:        test_case.name,
+          description: scenario.description.nil? ? '' : scenario.description,
+          line:        test_case.location.lines.max,
+          type:        'scenario'
+        }
+        return if test_case.tags.empty?
+        tags_array = []
+        test_case.tags.each { |tag| tags_array << tag.name }
+        @scenario[:tags] = tags_array
+      end
+
+      def create_id_from_scenario_source(scenario_source)
+        if scenario_source.type == :Scenario
+          scenario_source.scenario.name
+        else
+          scenario_outline_name = scenario_source.scenario_outline.name
+          examples_name         = scenario_source.examples.name
+          get_example_values scenario_source
+          @row_number = calculate_row_number(scenario_source)
+          "#{scenario_outline_name};#{examples_name};#{@row_number}"
         end
       end
 
-      #@api private
-      def before_test_step step
-        return if @config.dry_run?
+      def calculate_row_number(scenario_source)
+        scenario_source.examples.table_body.each_with_index do |row, index|
+          return index + 1 if row == scenario_source.row
+        end
+      end
 
-        begin_test_step step do |type|
-          if type == :before_step
-            @step_name = "#{step.source.last.keyword}#{step.to_s}"
-            mdc_add_step! @step_name
-          elsif :before_scenario
-            outline_number, outline_example = nil, nil
-            if @current_scenario.is_a? ::Cucumber::Core::Gherkin::ScenarioOutline
-              outline_example = step.source[3].values
-              outline_number  = calculate_outline_id(step)
+      def get_example_values(scenario_source)
+        scenario_source.examples.table_body.each do |row|
+
+          if row == scenario_source.row
+            row[:cells].each do |data|
+              @examples_values << data[:value].to_s
             end
-            mdc_before_scenario! @current_scenario.name, tags_from_test_step(step), outline_number, outline_example
           end
+          @examples_values
         end
       end
-
-      # #@api private
-      # def exception e, _
-      #   log.error e
-      # end
     end
   end
 end

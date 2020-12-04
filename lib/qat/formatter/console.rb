@@ -31,7 +31,7 @@ module QAT
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
-        config.on_event :test_run_finished, &method(:on_test_run_finished)
+       config.on_event :test_run_finished, &method(:on_test_run_finished)
       end
 
       def build (test_case, ast_lookup)
@@ -54,6 +54,7 @@ module QAT
           mdc_before_feature! @current_feature[:name]
         end
         @current_scenario = @scenario
+        mdc_before_scenario! @current_scenario[:name], @current_scenario[:tags], @row_number, @examples_values
       end
 
       #@api private
@@ -61,15 +62,15 @@ module QAT
         return if @config.dry_run?
         _test_case, result = *event.attributes
         result.to_sym
+        log.error { result.exception } if result == :failed
         log.info { "Finished #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\" - #{result}\n" } if @current_scenario
+
       end
 
       #@api private
-      def on_test_run_finished event
-        return if
-          @config.dry_run?
-        _test_case = *event.attributes
-        log.info { "Finished #{@current_feature[:keyword]}: \"#{@current_feature[:name]}\"" }
+      def on_test_run_finished _event
+        return if @config.dry_run?
+        log.info { "Finished #{@current_feature[:keyword]}: \"#{@current_feature[:name]}" }
         @current_feature = nil
         mdc_after_feature!
         end
@@ -82,11 +83,15 @@ module QAT
         @any_step_failed = true if result.failed?
       end
 
+
       def on_test_step_started(event)
         return if @config.dry_run?
-        test_step = event.test_step
-        return if test_step.location.file.include?('lib/qat/cucumber/')
-        log.info { "Running Step \"#{test_step.text}\"" }
+        @examples_values = []
+        @test_step = event.test_step
+        return if @test_step.location.file.include?('lib/qat/cucumber/')
+        log.info { "Running Step \"#{@test_step.text}\"" }
+        mdc_add_step! @test_step.text
+        mdc_before_scenario! @current_scenario[:name],  @current_scenario[:tags]
       end
 
 
@@ -114,7 +119,7 @@ module QAT
         }
         return if feature.tags.empty?
         tags_array = []
-        feature.tags.each { |tag| tags_array << { name: tag.name, line: tag.location.line } }
+        feature.tags.each { |tag| tags_array << tag.name }
         @feature_hash[:tags] = tags_array
       end
 
@@ -130,7 +135,7 @@ module QAT
         }
         return if test_case.tags.empty?
         tags_array = []
-        test_case.tags.each { |tag| tags_array << { name: tag.name, line: tag.location.line } }
+        test_case.tags.each { |tag| tags_array << tag.name }
         @scenario[:tags] = tags_array
       end
 
@@ -140,14 +145,27 @@ module QAT
         else
           scenario_outline_name = scenario_source.scenario_outline.name
           examples_name         = scenario_source.examples.name
-          row_number            = calculate_row_number(scenario_source)
-          "#{scenario_outline_name};#{examples_name};#{row_number}"
+          get_example_values scenario_source
+          @row_number = calculate_row_number(scenario_source)
+          "#{scenario_outline_name};#{examples_name};#{@row_number}"
         end
       end
 
       def calculate_row_number(scenario_source)
         scenario_source.examples.table_body.each_with_index do |row, index|
-          return index + 2 if row == scenario_source.row
+          return index + 1 if row == scenario_source.row
+        end
+      end
+
+      def get_example_values(scenario_source)
+        scenario_source.examples.table_body.each do |row|
+
+          if row == scenario_source.row
+            row[:cells].each do |data|
+              @examples_values << data[:value].to_s
+            end
+          end
+          @examples_values
         end
       end
     end

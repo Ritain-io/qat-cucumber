@@ -38,6 +38,7 @@ module QAT
           loggable_tags = tags.reject { |tag| tag.match(/^\@test\#/) }
           Log4r::MDC.put 'tags', loggable_tags
 
+          log.warn  outline_example
           Log4r::MDC.put 'outline_number', outline_number if outline_number
           Log4r::MDC.put 'outline_example', outline_example if outline_example
         end

@@ -33,10 +33,12 @@ Feature: Feature #216: Cucumber module: User Story #227: Custom logging to conso
   Scenario: Run dummy QAT project with console formatter - check output in normal run
     Given I set the environment variable to:
       | variable      | value                            |
-      | CUCUMBER_OPTS | --format QAT::Formatter::Console |
+      | CUCUMBER_OPTS | --format QAT::Formatter::Console   |
     When I run `rake formatter_tests`
     Then the output should match:
     """
+    \d{4}-\d\d-\d\d \d\d:\d\d:\d\d,\d\d\d \[INFO \] QAT::Configuration: Using directory config
+    \d{4}-\d\d-\d\d \d\d:\d\d:\d\d,\d\d\d \[INFO \] QAT::Configuration: Initializing configuration from directory config
     \d{4}-\d\d-\d\d \d\d:\d\d:\d\d,\d\d\d \[INFO \] QAT::Formatter::Console: Running Feature: "formatter tests"
     \d{4}-\d\d-\d\d \d\d:\d\d:\d\d,\d\d\d \[INFO \] QAT::Formatter::Console: Running Scenario: "true"
     \d{4}-\d\d-\d\d \d\d:\d\d:\d\d,\d\d\d \[WARN \] QAT::Cucumber::Hooks::Scenario: Scenario does not have a test id! Using a dummy one...
