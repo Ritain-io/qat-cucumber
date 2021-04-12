@@ -29,6 +29,8 @@ module QAT
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_step_started, &method(:on_test_step_started)
+        config.on_event :test_step_finished, &method(:on_test_step_finished)
+        config.on_event :test_run_finished, &method(:on_test_run_finished)
       end
 
       def build (test_case, ast_lookup)
@@ -79,6 +81,20 @@ module QAT
         mdc_before_scenario! @current_scenario[:name],  @current_scenario[:tags]
       end
 
+
+      def on_test_step_finished(event)
+        test_step, result = *event.attributes
+        return if test_step.location.file.include?('lib/qat/cucumber/')
+        log.info "Finished Step #{test_step}, #{result} "
+        @any_step_failed = true if result.failed?
+      end
+
+      def on_test_run_finished _event
+        return if @config.dry_run?
+        log.info { "Finished #{@current_feature[:keyword]}: \"#{@current_feature[:name]}" }
+        @current_feature = nil
+        mdc_after_feature!
+      end
 
       private
 
