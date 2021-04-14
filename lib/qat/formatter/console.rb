@@ -23,15 +23,15 @@ module QAT
 
       #@api private
       def initialize(config)
-        @config            = config
-        @io                = ensure_io(config.out_stream, config.error_stream)
-        @ast_lookup        = ::Cucumber::Formatter::AstLookup.new(config)
-        @feature_hashes    = []
+        @config         = config
+        @io             = ensure_io(config.out_stream, config.error_stream)
+        @ast_lookup     = ::Cucumber::Formatter::AstLookup.new(config)
+        @feature_hashes = []
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
-       config.on_event :test_run_finished, &method(:on_test_run_finished)
+        config.on_event :test_run_finished, &method(:on_test_run_finished)
       end
 
       def build (test_case, ast_lookup)
@@ -54,6 +54,7 @@ module QAT
           mdc_before_feature! @current_feature[:name]
         end
         @current_scenario = @scenario
+        log.info { "Running #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\"" }
         mdc_before_scenario! @current_scenario[:name], @current_scenario[:tags], @row_number, @examples_values
       end
 
@@ -63,35 +64,40 @@ module QAT
         _test_case, result = *event.attributes
         result.to_sym
         log.error { result.exception } if result == :failed
-        log.info { "Finished #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\" - #{result}\n" } if @current_scenario
-
-      end
-
-      #@api private
-      def on_test_run_finished _event
-        return if @config.dry_run?
-        log.info { "Finished #{@current_feature[:keyword]}: \"#{@current_feature[:name]}" }
-        @current_feature = nil
-        mdc_after_feature!
+        if @current_scenario
+          if defined?(result.message)
+            log.info { "Finished #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\" - #{result.message}\n" }
+          end
+        else
+          log.info { "Finished #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\" - #{result}\n" }
         end
-
-
-      def on_test_step_finished(event)
-        test_step, result = *event.attributes
-        return if test_step.location.file.include?('lib/qat/cucumber/')
-        log.info "Finished Step #{test_step}, #{result} "
-        @any_step_failed = true if result.failed?
       end
-
 
       def on_test_step_started(event)
         return if @config.dry_run?
         @examples_values = []
-        @test_step = event.test_step
+        @test_step       = event.test_step
         return if @test_step.location.file.include?('lib/qat/cucumber/')
-        log.info { "Running Step \"#{@test_step.text}\"" }
-        mdc_add_step! @test_step.text
-        mdc_before_scenario! @current_scenario[:name],  @current_scenario[:tags]
+        return if @test_step.location.file.include?('features/support/hooks')
+        step_source = @ast_lookup.step_source(event.test_step).step
+        log.info { "Step \"#{@test_step.text}\"" }
+        mdc_add_step! "#{step_source.keyword}#{@test_step.text}"
+      end
+
+      def on_test_step_finished(event)
+        test_step, result = *event.attributes
+        return if test_step.location.file.include?('lib/qat/cucumber/')
+        return if test_step.location.file.include?('features/support/hooks')
+        #log.info "Finished Step #{test_step}, #{result} "
+        log.info "Step Done!"
+        @any_step_failed = true if result.failed?
+      end
+
+      #@api private
+      def on_test_run_finished (event)
+        return if @config.dry_run?
+        log.info { "Finished #{@feature_hash[:keyword]}: \"#{@feature_hash[:name]}" }
+        mdc_after_feature!
       end
 
 

@@ -28,6 +28,8 @@ module QAT
 
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
+        #config.on_event :test_step_created, &method(:on_test_step_created)
+        #config.on_event :test_step_created, &method(:on_test_step_created)
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
@@ -54,7 +56,6 @@ module QAT
 
         @current_scenario = @scenario
         mdc_before_scenario! @current_scenario[:name], @current_scenario[:tags], @row_number, @examples_values
-
       end
 
       #@api private
@@ -68,31 +69,40 @@ module QAT
           log.error { result.exception }
         end
         @current_feature = nil
+        if @current_scenario
+          if defined?(result.message)
+            log.info { "Finished #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\" - #{result.message}\n" }
+          end
+        else
+          log.info { "Finished #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\" - #{result}\n" }
+        end
         mdc_after_feature!
       end
-
 
       def on_test_step_started(event)
         return if @config.dry_run?
         @examples_values = []
         @test_step = event.test_step
         return if @test_step.location.file.include?('lib/qat/cucumber/')
-        mdc_add_step! @test_step.text
-        mdc_before_scenario! @current_scenario[:name],  @current_scenario[:tags]
-      end
+        return if @test_step.location.file.include?('features/support/hooks')
+        step_source = @ast_lookup.step_source(event.test_step).step
+        log.info { "Step \"#{@test_step.text}\"" }
+        mdc_add_step! "#{step_source.keyword}#{@test_step.text}"
 
+      end
 
       def on_test_step_finished(event)
         test_step, result = *event.attributes
         return if test_step.location.file.include?('lib/qat/cucumber/')
-        log.info "Finished Step #{test_step}, #{result} "
+        return if test_step.location.file.include?('features/support/hooks')
+        #log.info "Finished Step #{test_step}, #{result} "
+           log.info "Step Done!"
         @any_step_failed = true if result.failed?
       end
 
       def on_test_run_finished _event
         return if @config.dry_run?
-        log.info { "Finished #{@current_feature[:keyword]}: \"#{@current_feature[:name]}" }
-        @current_feature = nil
+        log.info  "Finished #{@feature_hash[:keyword]}: #{@feature_hash[:name]}"
         mdc_after_feature!
       end
 
