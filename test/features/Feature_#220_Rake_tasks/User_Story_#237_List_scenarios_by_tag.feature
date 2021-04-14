@@ -13,11 +13,14 @@ Feature: Feature #220: Rake tasks; User Story #237: List scenarios by tag
     When I run `rake qat:list:by_tag[@qat]`
     Then the output should match:
     """
-    ^Disabling profiles...
-    WARNING: The formatter QAT::Formatter::Scenario::Name is using the deprecated formatter API which will be removed in v4.0 of Cucumber.
-
-    true: features/tests.feature:5
-    Many trues: features/tests.feature:10\s*$
+    {
+      "scenarios": {
+        "features/tests.feature:5": "true",
+        "features/tests.feature:10": "Many trues"
+      },
+      "repeated": {
+      }
+    }
     """
     And the exit status should be 0
 

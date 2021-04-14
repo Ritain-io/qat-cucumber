@@ -73,11 +73,6 @@ module QAT
         @scenario[:tags] = []
       end
 
-      def after_features
-        publish_result
-        @io.flush
-      end
-
       private
 
       def publish_result
@@ -107,7 +102,6 @@ module QAT
       end
 
 
-      private
 
       def background(background)
         @background_hash = {
