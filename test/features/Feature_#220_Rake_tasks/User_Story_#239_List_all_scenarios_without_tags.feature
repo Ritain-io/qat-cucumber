@@ -9,14 +9,13 @@ Feature: Feature #220: Rake tasks; User Story #239: List all scenarios without t
     Given I copy the directory named "../../resources/qat_project_with_tasks" to "project"
     And I cd to "project"
     When I run `rake qat:list:untagged`
-    Then the output should match:
+    Then the output should contain:
     """
-    ^Disabling profiles...
     {
-     "untagged": {
-      "this scenario also has no tags": "features/example2.feature:3",
-      "this scenario outline has no tags": "features/example2.feature:8"
-     },\s*$
+      "untagged": {
+        "this scenario also has no tags": "features/example2.feature:3",
+        "this scenario outline has no tags": "features/example2.feature:8"
+      },
     """
     And the exit status should be 0
 
@@ -25,12 +24,11 @@ Feature: Feature #220: Rake tasks; User Story #239: List all scenarios without t
     Given I copy the directory named "../../resources/qat_project_with_tasks_tagged" to "project"
     And I cd to "project"
     When I run `rake qat:list:untagged`
-    Then the output should match:
+    Then the output should contain:
     """
-    ^Disabling profiles...
     {
-     "untagged": {
-     },\s*$
+      "untagged": {
+      },
     """
     And the exit status should be 0
 
@@ -41,9 +39,8 @@ Feature: Feature #220: Rake tasks; User Story #239: List all scenarios without t
     When I run `rake qat:list:untagged`
     Then the output should match:
     """
-    ^Disabling profiles...
     {
-     "untagged": {
-     },\s*$
+      "untagged": {
+      },
     """
     And the exit status should be 0

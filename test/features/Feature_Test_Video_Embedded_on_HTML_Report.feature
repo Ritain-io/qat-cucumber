@@ -3,7 +3,7 @@ Feature: Complete test id information report
   As a tester,
   In order to see if there any duplicate test ids,
   I want to have the test id information in the test id report
-
+  @test#32312
   Scenario: Report for embedding Video file on Html report
     Given I copy the directory named "../../resources/qat_project_test_video_embed" to "project"
     And I cd to "project"

@@ -10,11 +10,11 @@ And(/^The video can be downloaded$/) do
 end
 
 
-And(/^Then the XML report for JUnit and XUnit contains a time tag with 3 decimal numbers$/) do
+And(/^Then the XML report for JUnit and XUnit contains a time tag with 6 decimal numbers$/) do
   @doc = Nokogiri::HTML(File.open(::File.join(::File.dirname(__FILE__), '..', '..', 'tmp', 'aruba', 'project', 'public', 'TEST-features-true_assertions.xml')))
 
-  assert @doc.xpath("//testsuite").to_s.match(/time="\d+.\d{3}\"/)
+  assert @doc.xpath("//testsuite").to_s.match(/time="\d+.\d{6}\"/)
   @doc.xpath("//testcase").to_s.scan(/time="\d+.\d+\"/) do |times|
-    assert times.match(/time="\d+.\d{3}\"/)
+    assert times.match(/time="\d+.\d{6}\"/)
   end
 end

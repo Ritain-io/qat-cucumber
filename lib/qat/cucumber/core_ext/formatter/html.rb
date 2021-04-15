@@ -31,7 +31,7 @@ module Cucumber
           src     = Pathname.new(File.absolute_path(src)).relative_path_from(out_dir)
         end
 
-        @builder.span(:class => 'embed') do |pre|
+        @html_formatter.span(:class => 'embed') do |pre|
           pre << %{
           <a href="" onclick="video=document.getElementById('video_div_#{@video_id}'); video.style.display = (video.style.display == 'none' ? 'block' : 'none');return false"><br>#{label}</a><br>&nbsp;
           <div id="video_div_#{@video_id}" style="display: none">
@@ -45,4 +45,3 @@ module Cucumber
     end
   end
 end
-
