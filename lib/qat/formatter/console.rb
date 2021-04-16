@@ -88,9 +88,8 @@ module QAT
         test_step, result = *event.attributes
         return if test_step.location.file.include?('lib/qat/cucumber/')
         return if test_step.location.file.include?('features/support/hooks')
-        #log.info "Finished Step #{test_step}, #{result} "
+        log.error  result.exception  if result.failed?
         log.info "Step Done!"
-        @any_step_failed = true if result.failed?
       end
 
       #@api private

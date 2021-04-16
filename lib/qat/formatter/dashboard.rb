@@ -96,8 +96,8 @@ module QAT
         return if test_step.location.file.include?('lib/qat/cucumber/')
         return if test_step.location.file.include?('features/support/hooks')
         #log.info "Finished Step #{test_step}, #{result} "
-           log.info "Step Done!"
-        @any_step_failed = true if result.failed?
+        log.error  result.exception  if result.failed?
+        log.info "Step Done!"
       end
 
       def on_test_run_finished _event

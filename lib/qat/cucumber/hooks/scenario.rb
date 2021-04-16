@@ -1,9 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'cucumber'
 require 'qat/logger'
-require 'cucumber/core/gherkin/writer'
-require 'cucumber/formatter/ast_lookup'
-require 'cucumber/formatter/json'
+
 
 module QAT
   module Cucumber
@@ -27,10 +25,12 @@ module QAT
 
         private
 
-        def test_id(scenario)
+        def test_id(scenario_source)
          # outline_id = get_outline_id(scenario)
 
-          tags    = scenario_tags(scenario)
+
+
+          tags    = scenario_tags(scenario_source)
           tag     = tags.select { |tag| tag.match /^\@test\#/ }.first
           test_id = if tag
                       tag.gsub '@test#', 'test_'
@@ -39,45 +39,8 @@ module QAT
                       'test_0'
                     end
 
-       #   "#{test_id}#{outline_id}"
+         # "#{test_id}#{outline_id}"
            "#{test_id}"
-        end
-
-
-        ####  Cucumber::RunningTestCase::ScenarioOutlineExample deprecated
-        def get_outline_id(scenario)
-
-
-
-
-          scenarios = get_children(document[:feature])
-          outline   = get_scenarios_outline scenarios
-          if outline.empty?
-            nil
-          else
-
-          end
-        end
-
-        def get_children(test_case_source)
-          test_case_source.children! { @examples_tables }
-        end
-
-
-        def get_scenarios_outline(scenarios)
-          scenarios_array = []
-          scenarios.each do |item|
-            scenarios_array << item.scenario.examples rescue nil
-          end
-          scenarios_array
-        end
-
-        def get_scenario_id(scenarios)
-          scenarios_array = []
-          scenarios.each do |item|
-            scenarios_array << item.scenario.examples rescue nil
-          end
-          scenarios_array
         end
 
 
