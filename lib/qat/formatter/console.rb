@@ -46,7 +46,8 @@ module QAT
       #@api private
       def on_test_case_started event
         return if @config.dry_run?
-        test_case = event.test_case
+        @row_number = nil
+        test_case   = event.test_case
         build(test_case, @ast_lookup)
         unless @current_feature
           @current_feature = @feature_hash
@@ -67,9 +68,9 @@ module QAT
         if @current_scenario
           if defined?(result.message)
             log.info { "Finished #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\" - #{result.message}\n" }
+          else
+            log.info { "Finished #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\" - #{result}\n" }
           end
-        else
-          log.info { "Finished #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\" - #{result}\n" }
         end
       end
 
@@ -85,10 +86,11 @@ module QAT
       end
 
       def on_test_step_finished(event)
+        return if @config.dry_run?
         test_step, result = *event.attributes
         return if test_step.location.file.include?('lib/qat/cucumber/')
         return if test_step.location.file.include?('features/support/hooks')
-        log.error  result.exception  if result.failed?
+        log.error result.exception if result.failed?
         log.info "Step Done!"
       end
 

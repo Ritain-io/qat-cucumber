@@ -3,7 +3,6 @@ Feature: Complete test id information report
   As a tester,
   In order to see if there any duplicate test ids,
   I want to have the test id information in the test id report
-
   Scenario: Report for test project with duplicate test ids
     Given I copy the directory named "../../resources/qat_project_duplicate_test_ids" to "project"
     And I cd to "project"
@@ -12,11 +11,8 @@ Feature: Complete test id information report
       | CUCUMBER_FORMAT |       |
       | CUCUMBER_OPTS   |       |
     When I run `rake qat:tags:validate_test_ids`
-    Then the output should match:
+    Then the output should contain:
     """
-    Disabling profiles...
-    WARNING: The formatter QAT::Formatter::TestIds is using the deprecated formatter API which will be removed in v4.0 of Cucumber.
-
     ------------------------------------
     Duplicate test ids found!
     ------------------------------------
@@ -28,39 +24,43 @@ Feature: Complete test id information report
     And a file named "public/test_ids.json" should contain:
     """
     {
-     "max": 4,
-     "untagged": {
-     },
-     "mapping": {
-      "1": {
-       "name": "example 3 scenario 2",
-       "path": "features/example3.feature:10"
+      "max": 4,
+      "untagged": {
       },
-      "2": {
-       "name": "example 1 scenario 2",
-       "path": "features/example1.feature:14"
+      "mapping": {
+        "1": {
+          "name": "example 3 scenario 2",
+          "path": "features/example3.feature:10"
+        },
+        "2": {
+          "name": "example 1 scenario 2",
+          "path": "features/example1.feature:14"
+        },
+        "3": {
+          "name": "example 2 scenario 2",
+          "path": "features/example2.feature:10"
+        },
+        "4": {
+          "name": "example 1 scenario 1",
+          "path": "features/example1.feature:8"
+        }
       },
-      "3": {
-       "name": "example 2 scenario 2",
-       "path": "features/example2.feature:10"
-      },
-      "4": {
-       "name": "example 1 scenario 1",
-       "path": "features/example1.feature:8"
+      "duplicate": {
+        "2": [
+          {
+            "name": "example 1 scenario 2",
+            "path": "features/example1.feature:14"
+          },
+          {
+            "name": "example 2 scenario 1",
+            "path": "features/example2.feature:4"
+          },
+          {
+            "name": "example 3 scenario 1",
+            "path": "features/example3.feature:4"
+          }
+        ]
       }
-     },
-     "duplicate": {
-      "2": [   {
-        "name": "example 1 scenario 2",
-        "path": "features/example1.feature:14"
-       },   {
-        "name": "example 2 scenario 1",
-        "path": "features/example2.feature:4"
-       },   {
-        "name": "example 3 scenario 1",
-        "path": "features/example3.feature:4"
-       }]
-     }
     }
     """
     And the exit status should be 1

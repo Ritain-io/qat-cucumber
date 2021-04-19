@@ -28,8 +28,6 @@ module QAT
 
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
-        #config.on_event :test_step_created, &method(:on_test_step_created)
-        #config.on_event :test_step_created, &method(:on_test_step_created)
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
@@ -47,6 +45,7 @@ module QAT
       #@api private
       def on_test_case_started event
         return if @config.dry_run?
+        @row_number = nil
         test_case = event.test_case
         build(test_case, @ast_lookup)
         unless @current_feature
@@ -92,6 +91,7 @@ module QAT
       end
 
       def on_test_step_finished(event)
+        return if @config.dry_run?
         test_step, result = *event.attributes
         return if test_step.location.file.include?('lib/qat/cucumber/')
         return if test_step.location.file.include?('features/support/hooks')

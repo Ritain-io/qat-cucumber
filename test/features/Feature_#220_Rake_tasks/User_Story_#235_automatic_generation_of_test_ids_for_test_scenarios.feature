@@ -295,33 +295,7 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     {
       "max": 0,
       "untagged": {
-      },
-      "mapping": {
-      },
-      "duplicate": {
-      }
-    }
-    """
-    And the exit status should be 0
-
-  Scenario: Give test ids to test scenarios in a project without test ids and no scenarios with steps
-    Given I copy the directory named "../../resources/qat_project_with_tasks_empty_scenario" to "project"
-    And I cd to "project"
-    And I set the environment variables to:
-      | variable        | value |
-      | CUCUMBER_FORMAT |       |
-      | CUCUMBER_OPTS   |       |
-    When I run `rake qat:tags:test_ids`
-    Then the output should contain:
-    """
-    ^Disabling profiles...
-    There are no scenarios without test id.
-    """
-    And a file named "./public/test_ids.json" should contain:
-    """
-    {
-      "max": 0,
-      "untagged": {
+        "Empty Scenario": "features/example1.feature:3"
       },
       "mapping": {
       },
