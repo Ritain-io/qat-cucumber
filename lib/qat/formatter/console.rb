@@ -21,7 +21,6 @@ module QAT
       include QAT::Formatter::Loggable
       include QAT::Logger
 
-      #@api private
       def initialize(config)
         @config         = config
         @io             = ensure_io(config.out_stream, config.error_stream)
@@ -43,7 +42,6 @@ module QAT
         scenario(ast_lookup.scenario_source(test_case), test_case)
       end
 
-      #@api private
       def on_test_case_started event
         return if @config.dry_run?
         @row_number = nil
@@ -63,8 +61,7 @@ module QAT
       def on_test_case_finished event
         return if @config.dry_run?
         _test_case, result = *event.attributes
-        result.to_sym
-        log.error { result.exception } if result == :failed
+        log.error { result.exception } if result.to_sym == :failed
         if @current_scenario
           if defined?(result.message)
             log.info { "Finished #{@current_scenario[:keyword]}: \"#{@current_scenario[:name]}\" - #{result.message}\n" }
@@ -90,8 +87,12 @@ module QAT
         test_step, result = *event.attributes
         return if test_step.location.file.include?('lib/qat/cucumber/')
         return if test_step.location.file.include?('features/support/hooks')
-        log.error result.exception if result.failed?
-        log.info "Step Done!"
+        if result.failed?
+          mdc_add_step! @test_step.text
+          mdc_add_status_failed!
+        else
+          log.info "Step Done!"
+        end
       end
 
       #@api private

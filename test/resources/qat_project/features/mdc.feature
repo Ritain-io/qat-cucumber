@@ -42,10 +42,10 @@ Feature: mdc tests
       | 2   | temp   | parameter |
     Examples: Second table
       | num | param1     | param2      |
-      | 1  | still_temp | yet_another |
+      | 3   | still_temp | yet_another |
     Examples: Third table
       | num | param1 | param2      |
-      | 1   | temp   | yet_another |
+      | 4   | temp   | yet_another |
 
   Scenario Outline: MDC with multiple outline tables - some disabled
     When the MDC has the values
@@ -65,7 +65,7 @@ Feature: mdc tests
   @mdc @mdc_success
     Examples: Another enabled table
       | num | param1 | param2      |
-      | 1   | temp   | yet_another |
+      | 4   | temp   | yet_another |
 
   @mdc @mdc_error
   Scenario: MDC error
@@ -106,10 +106,10 @@ Feature: mdc tests
       | 2   | temp   | parameter |
     Examples: Second table
       | num | param1     | param2      |
-      | 1   | still_temp | yet_another |
+      | 3   | still_temp | yet_another |
     Examples: Third table
       | num | param1 | param2      |
-      | 1   | temp   | yet_another |
+      | 4   | temp   | yet_another |
 
 
   Scenario Outline: MDC with multiple outline tables - some disabled
@@ -131,4 +131,4 @@ Feature: mdc tests
   @mdc @mdc_error
     Examples: Another enabled table
       | num | param1 | param2      |
-      | 1   | temp   | yet_another |
+      | 4   | temp   | yet_another |

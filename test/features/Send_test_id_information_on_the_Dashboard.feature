@@ -1,4 +1,4 @@
-@epic#198 @feature#216 @user_story#225 @announce-directory @announce-stdout @announce-stderr @announce-output @announce-command @announce-changed-environment
+@epic#198 @feature#216 @user_story#225 @announce-directory @announce-stdout @announce-stderr @announce-output @announce-command @announce-changed-environment @test#3213213
 Feature: Feature#216: Cucumber module: User Story #225: Log test failures to Dashboard
   As a tester
   I want to have the test id information on the Dashboard

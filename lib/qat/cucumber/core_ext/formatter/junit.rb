@@ -1,9 +1,9 @@
 require 'cucumber/formatter/junit'
 
-module Cucumber
-  module Formatter
-    # The formatter used for <tt>--format junit</tt>
-    class Junit
+# module Cucumber
+#   module Formatter
+#     # The formatter used for <tt>--format junit</tt>
+#     class Junit
 
       # #Method to parse time in testsuite elements
       # def end_feature(feature_data)
@@ -51,7 +51,7 @@ module Cucumber
       #   end
       #   @current_feature_data[:tests] += 1
       # end
-    end
-  end
-end
+#     end
+#   end
+# end
 
