@@ -1,13 +1,9 @@
 Given(/^true$/) do
-  log.debug "true"
-  Kernel.puts "true"
-  expect true
+  assert true
 end
 
 Given (/^false$/) do
-  log.debug "false"
-  Kernel.puts "false"
-  expect false
+ assert false
 end
 
 Given (/^pending$/) do

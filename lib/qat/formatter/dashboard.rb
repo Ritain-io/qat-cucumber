@@ -72,7 +72,6 @@ module QAT
 
       def on_test_step_started(event)
         return if @config.dry_run?
-        @examples_values = []
         @test_step       = event.test_step
         return if @test_step.location.file.include?('lib/qat/cucumber/')
         return if @test_step.location.file.include?('features/support/hooks')
@@ -145,6 +144,7 @@ module QAT
         if scenario_source.type == :Scenario
           scenario_source.scenario.name
         else
+          @examples_values = []
           scenario_outline_name = scenario_source.scenario_outline.name
           examples_name         = scenario_source.examples.name
           get_example_values scenario_source

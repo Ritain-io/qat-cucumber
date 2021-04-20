@@ -30,3 +30,4 @@ Feature: Feature #216: Cucumber module: User Story #227: Custom logging to conso
 #    When I run `rake formatter_tests`
 #    Then the stdout should not contain anything
 #    And the exit status should be 0
+

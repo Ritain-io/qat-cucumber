@@ -30,6 +30,11 @@ When /^I check the errors in the dashboard for this test:$/ do |table|
           "match": {
             "facility": "QAT Error Dashboard"
           }
+        },
+        {
+          "match": {
+            "level_name": "ERROR"
+          }
         }
       ],
       "filter": [
