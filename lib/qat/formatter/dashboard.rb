@@ -142,6 +142,7 @@ module QAT
 
       def create_id_from_scenario_source(scenario_source)
         if scenario_source.type == :Scenario
+          @examples_values=nil
           scenario_source.scenario.name
         else
           @examples_values = []
