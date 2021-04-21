@@ -32,9 +32,9 @@ Feature: Feature#216: Cucumber module: User Story #225: Log test failures to Das
       | QAT::Formatter::Dashboard | Minitest::Assertion | mdc with test ids tests | MDC with multiple outline tables with ids - some disabled | @top_level_tag,@mdc_with_ids,@mdc_with_ids_error | And false | 1,temp,yet_another       | 1              | Caught Minitest::Assertion: Expected false to be truthy. |
 
 
-#  Scenario: Run dummy QAT project with console formatter - check MDC is set
-#    Given I set the environment variable to:
-#      | variable      | value                            |
-#      | CUCUMBER_OPTS | --format QAT::Formatter::Console |
-#    When I run `rake mdc_with_ids_tests`
-#    And the exit status should be 1
+  Scenario: Run dummy QAT project with console formatter - check MDC is set
+    Given I set the environment variable to:
+      | variable      | value                            |
+      | CUCUMBER_OPTS | --format QAT::Formatter::Console |
+    When I run `rake mdc_with_ids_tests`
+    And the exit status should be 1
