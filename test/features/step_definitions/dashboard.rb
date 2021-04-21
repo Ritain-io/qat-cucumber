@@ -30,6 +30,11 @@ When /^I check the errors in the dashboard for this test:$/ do |table|
           "match": {
             "facility": "QAT Error Dashboard"
           }
+        },
+        {
+          "match": {
+            "level_name": "ERROR"
+          }
         }
       ],
       "filter": [
@@ -48,7 +53,7 @@ When /^I check the errors in the dashboard for this test:$/ do |table|
   JSON
   obj=[]
 
-  puts body
+  log.info body
 
   opts = { body: body, headers: {'Content-Type' => 'application/json'} }
 
@@ -69,9 +74,9 @@ When /^I check the errors in the dashboard for this test:$/ do |table|
 
 
   table.hashes.each_with_index do |line, i|
-    puts obj[i]
+    Kernel.puts obj[i]
     line.each do |key, value|
-      puts "Key '#{key}' - Expected '#{value}', Actual '#{obj[i][key]}'"
+      Kernel.puts "Key '#{key}' - Expected '#{value}', Actual '#{obj[i][key]}'"
       if value
         assert_equal value, obj[i][key]
       else

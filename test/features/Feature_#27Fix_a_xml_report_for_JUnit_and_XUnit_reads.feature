@@ -13,4 +13,4 @@ Feature: Complete test id information report
       | CUCUMBER_OPTS   | --format junit --out public/ |
     When I run `rake assertions_tests`
     Then the exit status should be 0
-    And Then the XML report for JUnit and XUnit contains a time tag with 3 decimal numbers
+    And Then the XML report for JUnit and XUnit contains a time tag with 6 decimal numbers

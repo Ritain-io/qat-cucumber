@@ -4,6 +4,8 @@ require 'cucumber/formatter/io'
 require 'cucumber/gherkin/formatter/escaping'
 require 'qat/logger'
 require_relative 'loggable'
+require 'cucumber/core/gherkin/writer'
+require_relative 'helper'
 
 module QAT
   module Formatter
@@ -14,71 +16,25 @@ module QAT
       include ::FileUtils
       include ::Cucumber::Formatter::Io
       include ::Cucumber::Gherkin::Formatter::Escaping
+      include ::Cucumber::Core::Gherkin::Writer
       include QAT::Formatter::Loggable
       include QAT::Logger
+      include QAT::Formatter::Helper
 
       #@api private
-      def initialize(_, path_or_io, options)
-        @options = options
-
-        ensure_outputter path_or_io unless options[:dry_run]
+      def initialize(config)
+        @config = config
+        @io     = ensure_io(config.out_stream, config.error_stream)
+        ensure_outputter config.out_stream
+        @ast_lookup     = ::Cucumber::Formatter::AstLookup.new(config)
+        @feature_hashes = []
+        config.on_event :test_case_started, &method(:on_test_case_started)
+        config.on_event :test_case_finished, &method(:on_test_case_finished)
+        config.on_event :test_step_started, &method(:on_test_step_started)
+        config.on_event :test_step_finished, &method(:on_test_step_finished)
+        config.on_event :test_run_finished, &method(:on_test_run_finished)
       end
 
-
-      #@api private
-      def before_test_case test_case
-        return if @options[:dry_run]
-
-        unless @current_feature
-          @current_feature = test_case.source[0]
-          mdc_before_feature! @current_feature.name
-        end
-
-        @current_scenario = test_case.source[1]
-      end
-
-      #@api private
-      def after_feature *_
-        return if @options[:dry_run]
-
-        @current_feature = nil
-        mdc_after_feature!
-      end
-
-      #@api private
-      def after_test_case step, passed
-        return if @options[:dry_run]
-
-        if passed.respond_to? :exception
-          mdc_add_step! @step_name
-          mdc_add_status_failed!
-          log.error passed.exception
-        end
-      end
-
-      #@api private
-      def before_test_step step
-        return if @options[:dry_run]
-
-        begin_test_step step do |type|
-          if type == :before_step
-            @step_name = "#{step.source.last.keyword}#{step.name}"
-            mdc_add_step! @step_name
-          elsif :before_scenario
-            outline_number, outline_example = nil, nil
-            if @current_scenario.is_a? ::Cucumber::Core::Ast::ScenarioOutline
-              outline_example = step.source[3].values
-              outline_number  = calculate_outline_id(step)
-            end
-            mdc_before_scenario! @current_scenario.name, tags_from_test_step(step), outline_number, outline_example
-          end
-        end
-      end
-
-      # #@api private
-      # def exception e, _
-      #   log.error e
-      # end
     end
   end
 end

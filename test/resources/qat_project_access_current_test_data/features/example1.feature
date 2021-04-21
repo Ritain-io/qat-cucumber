@@ -8,14 +8,14 @@ Feature: As a test developer, I want to access current test data, In order to be
     And the test run id is correctly defined
     And the evidence prefix is correctly defined
 
-  @test#5
-  Scenario Outline: verify test_id during execution of scenario outline
-    Then The test id should be "<test_id>"
-    And the test run id is correctly defined
-    And the evidence prefix is correctly defined
-
-    Examples:
-    |test_id |
-    |test_5_1|
-    |test_5_2|
+#  @test#5
+#  Scenario Outline: verify test_id during execution of scenario outline
+#    Then The test id should be "<test_id>"
+#    And the test run id is correctly defined
+#    And the evidence prefix is correctly defined
+#
+#    Examples:
+#    |test_id |
+#    |test_5_1|
+#    |test_5_2|
 

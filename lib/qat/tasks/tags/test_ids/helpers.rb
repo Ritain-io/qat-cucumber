@@ -15,7 +15,7 @@ module TestIds
 
         update_test_ids(files, max_test_id)
       else
-        puts "There are no scenarios without test id. Last test id given was '@test##{max_test_id}'."
+        Kernel.puts "There are no scenarios without test id. Last test id given was '@test##{max_test_id}'."
       end
     end
 
@@ -39,8 +39,8 @@ module TestIds
     #@param files [Array] list of files to change
     #@see TestIds::Helpers#map_untaged
     def announce_changes(files)
-      puts "Giving test ids to scenarios:"
-      puts files.to_json({
+      Kernel.puts "Giving test ids to scenarios:"
+      Kernel.puts files.to_json({
                            indent:    ' ',
                            space:     ' ',
                            object_nl: "\n"
@@ -57,7 +57,7 @@ module TestIds
         files.each { |file, lines| max_test_id = rewrite_file(file, lines, max_test_id) }
       rescue
         path = File.join(Dir.pwd, 'public', 'test_ids_failed.feature')
-        puts "Tag attribution failed! Check '#{path}' for more information!"
+        Kernel.puts "Tag attribution failed! Check '#{path}' for more information!"
         File.write(path, file_lines.join)
       end
     end
@@ -75,7 +75,7 @@ module TestIds
 
       norm_lines.size.times do
         line = norm_lines.shift
-        puts "Editing file #{file} @ line #{line}."
+        Kernel.puts "Editing file #{file} @ line #{line}."
         max_test_id = add_tags(file_lines, line, max_test_id)
       end
 

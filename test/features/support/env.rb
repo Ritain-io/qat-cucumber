@@ -18,7 +18,7 @@ end
 
 ENV['JENKINS_URL'] = nil
 
-require 'qat/cucumber'
+require_relative '../../../lib/qat/cucumber'
 require_relative '../../lib/core_helper'
 require_relative '../../lib/configuration_helper'
 

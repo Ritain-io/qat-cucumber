@@ -20,10 +20,16 @@ Feature: Feature #220: Rake tasks; User Story #238: List all duplicated names fo
     And I run `ruby -e "puts File.read './scenarios.json'"`
     Then the output should match:
     """
-    \s*},
-     "repeated": {
-     }
-    }\s*$
+    {
+      "scenarios": {
+        "features/example1.feature:8": "this scenario has tags",
+        "features/example1.feature:13": "this scenario has no tags",
+        "features/some_folder/example2.feature:5": "this scenario also has tags",
+        "features/some_folder/example2.feature:11": "this scenario outline has tags"
+      },
+      "repeated": {
+      }
+    }
     """
     And the exit status should be 0
 
@@ -41,13 +47,22 @@ Feature: Feature #220: Rake tasks; User Story #238: List all duplicated names fo
     ^Disabling profiles...\s*$
     """
     And I run `ruby -e "puts File.read './scenarios.json'"`
-    Then the output should match:
+    Then the output should contain:
     """
-    \s*},
-     "repeated": {
-      "this scenario has tags": \[\s*"features/example1.feature:13",\s*"features/example2.feature:4"\]
-     }
-    }\s*$
+    {
+      "scenarios": {
+        "features/example1.feature:8": "this scenario has tags",
+        "features/example1.feature:13": "this scenario has tags",
+        "features/example2.feature:4": "this scenario has tags",
+        "features/example2.feature:9": "this scenario outline has no tags"
+      },
+      "repeated": {
+        "this scenario has tags": [
+          "features/example1.feature:13",
+          "features/example2.feature:4"
+        ]
+      }
+    }
     """
     And the exit status should be 0
 
@@ -65,12 +80,14 @@ Feature: Feature #220: Rake tasks; User Story #238: List all duplicated names fo
     ^Disabling profiles...\s*$
     """
     And I run `ruby -e "puts File.read './scenarios.json'"`
-    Then the output should match:
+    Then the output should contain:
     """
-    \s*},
-     "repeated": {
-     }
-    }\s*$
+    {
+      "scenarios": {
+      },
+      "repeated": {
+      }
+    }
     """
     And the exit status should be 0
 
@@ -88,11 +105,15 @@ Feature: Feature #220: Rake tasks; User Story #238: List all duplicated names fo
     ^Disabling profiles...\s*$
     """
     And I run `ruby -e "puts File.read './scenarios.json'"`
-    Then the output should match:
+    Then the output should contain:
     """
-    \s*},
-     "repeated": {
-     }
-    }\s*$
+    {
+      "scenarios": {
+        "features/example2.feature:4": "this scenario has tags",
+        "features/example2.feature:9": "this scenario outline has no tags"
+      },
+      "repeated": {
+      }
+    }
     """
     And the exit status should be 0
