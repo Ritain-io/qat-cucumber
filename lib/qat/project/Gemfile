@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
 # QAT is a Cucumber-based toolkit for automating tests. (https://github.com/readiness-it/qat-cucumber)
-gem 'qat-cucumber', '~> 6.0'
+gem 'qat-cucumber'
