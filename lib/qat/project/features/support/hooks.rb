@@ -13,7 +13,7 @@
 # Around do |scenario, block|
 #   # Your code here
 #
-#   #DON'T FORGET TO CALL THE SCENARIO'S BLOCK!!!!
+#   #DON'T FORGET TO CALL THE SCENARIO'S BLOCK!!!
 #   block.call
 
 #   # Your code here

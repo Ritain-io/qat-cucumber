@@ -1,5 +1,4 @@
 @epic#1 @feature#2 @user_story#3 @dummy_feature
-  #Core Feature
 Feature: some feature
   In order to do something
   As someone
