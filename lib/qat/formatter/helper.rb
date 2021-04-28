@@ -39,8 +39,7 @@ module QAT
       def on_test_step_started(event)
         return if @config.dry_run?
         test_step = event.test_step
-        return if internal_hook?(test_step)
-        return if support_hook?(test_step)
+        return unless features?(test_step)
         step_source = @ast_lookup.step_source(test_step).step
         print_assign_step test_step, step_source
       end
@@ -49,8 +48,7 @@ module QAT
       def on_test_step_finished(event)
         return if @config.dry_run?
         test_step, result = *event.attributes
-        return if internal_hook?(test_step)
-        return if support_hook?(test_step)
+        return unless features?(test_step)
         log.info "Step Done!"
       end
 

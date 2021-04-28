@@ -49,16 +49,9 @@ module QAT
         end
       end
 
-      def internal_hook?(test_step)
-        test_step.location.file.include?('lib/qat/cucumber/')
+      def features?(test_step)
+        test_step.location.file.include?('.feature')
       end
-
-      def support_hook?(test_step)
-        test_step.location.file.include?('features/support/hooks')
-      end
-
-
-
 
     end
   end
