@@ -10,6 +10,6 @@ module QAT
   #@since 0.1.0
   module Cucumber
     # Represents QAT's version
-    VERSION = '7.0.4'
+    VERSION = '7.0.5'
   end
 end
