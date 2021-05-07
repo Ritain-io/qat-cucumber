@@ -16,7 +16,7 @@ Feature: Feature #216: Cucumber module: User Story #225: Log test failures to Da
   Scenario: Run dummy QAT project with dashboard formatter - check no output in dry run
     Given I set the environment variable to:
       | variable      | value                                        |
-      | CUCUMBER_OPTS | --dry-run --format QAT::Formatter::Dashboard --out Dashboard |
+      | CUCUMBER_OPTS | --dry-run --format QAT::Formatter::Dashboard --out public/Dashboard |
     When I run `rake formatter_tests`
     And the exit status should be 0
 
@@ -33,7 +33,7 @@ Feature: Feature #216: Cucumber module: User Story #225: Log test failures to Da
   Scenario: Run dummy QAT project with dashboard formatter - check errors are published with MDC
     Given I set the environment variable to:
       | variable      | value                                              |
-      | CUCUMBER_OPTS | --format QAT::Formatter::Dashboard --out Dashboard |
+      | CUCUMBER_OPTS | --format QAT::Formatter::Dashboard --out public/Dashboard |
     When I run `rake mdc_error_tests`
     Then the exit status should be 1
     And I check the errors in the dashboard for this test:

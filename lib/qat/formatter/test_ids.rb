@@ -19,7 +19,6 @@ module QAT
         @ast_lookup         = ::Cucumber::Formatter::AstLookup.new(@config)
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
-
       end
 
 

@@ -25,7 +25,7 @@ module QAT
       def initialize(config)
         @config = config
         @io     = ensure_io(config.out_stream, config.error_stream)
-        ensure_outputter config.out_stream
+        ensure_outputter 'Dashboard' unless @config.dry_run?
         @ast_lookup     = ::Cucumber::Formatter::AstLookup.new(config)
         @feature_hashes = []
         config.on_event :test_case_started, &method(:on_test_case_started)
