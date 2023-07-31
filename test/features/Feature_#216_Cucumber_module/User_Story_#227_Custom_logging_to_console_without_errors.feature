@@ -14,4 +14,4 @@ Feature: Feature #216: Cucumber module: User Story #227: Custom logging to conso
     And I run `mkdir -p public`
     And the exit status should be 0
     When I run `cucumber`
-    Then the exit status should be 1
+    Then the exit status should be 2

@@ -310,7 +310,7 @@ And(/^the stdout should contain the value for QAT::Cucumber::VERSION$/) do
     end.join("\n")
     expect(combined_output).to send(:an_output_string_being_eq, QAT::Cucumber::VERSION)
   else
-    expect(commands).to include_an_object send(:have_output_on_stdout, send(:an_output_string_being_eq, QAT::Cucumber::VERSION))
+    expect(commands.first.stdout).to include_output_string QAT::Cucumber::VERSION
   end
 end
 

@@ -6,7 +6,7 @@ end
 
 Given(/^I have the following environment variables$/) do |table|
   table.headers.each do |header|
-    table.map_column! header do |value|
+    table.map_column header do |value|
       value == 'nil' ? nil : value
     end
   end
@@ -26,7 +26,7 @@ end
 
 Then(/^the MDC has the values$/) do |table|
   table.headers.each do |header|
-    table.map_column! header do |value|
+    table.map_column header do |value|
       value == 'nil' ? nil : value
     end
   end

@@ -1,11 +1,12 @@
-standard: &standard >
+default: --profile standard
+standard:
   --format pretty
   --format html --out public/index.html
   --format junit --out public/
   --strict
-  --tags 'not @wip'
+  --tags "not @wip"
 
-coverage: &coverage >
+coverage:
   --format QAT::Formatter::Console
   --format QAT::Formatter::ReqCoverage --out public/requirement_coverage.json
   --format html --out public/index.html
@@ -13,16 +14,14 @@ coverage: &coverage >
   --strict
   --tags 'not @wip'
 
-qat: &qat >
+qat:
   --format QAT::Formatter::Console
   --format html --out public/index.html
   --format junit --out public/
   --strict
   --tags 'not @wip'
 
-flat: &flat >
+flat:
   --format pretty
   --strict
   --tags 'not @wip'
-
-default: *standard

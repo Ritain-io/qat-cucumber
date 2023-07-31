@@ -1,4 +1,5 @@
 # -*- encoding : utf-8 -*-
+require "active_support"
 require 'minitest'
 require 'cucumber'
 require_relative 'cucumber/version'

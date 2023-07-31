@@ -32,7 +32,7 @@ module QAT
         files = [File.join(configuration_directory, configuration.environment, 'logger.yml'),
                  File.join(configuration_directory, 'common', 'logger.yml')]
 
-        config = files.select { |file| File.exists?(file) }
+        config = files.select { |file| File.exist?(file) }
 
         config.first
       end

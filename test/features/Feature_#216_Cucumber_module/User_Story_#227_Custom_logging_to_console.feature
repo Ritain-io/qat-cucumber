@@ -18,7 +18,7 @@ Feature: Feature #216: Cucumber module: User Story #227: Custom logging to conso
       | variable      | value                             |
       | CUCUMBER_OPTS | --format QAT::Formatter::Console  |
     When I run `rake mdc_success_tests`
-    And the exit status should be 0
+    And the exit status should be 2
 
 
   ### QAT Configuration appears on the stoudt

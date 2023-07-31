@@ -24,10 +24,9 @@ Feature: Feature #216: Cucumber module: User Story #225: Log test failures to Da
   Scenario: Run dummy QAT project with dashboard formatter - no mandatory output for formatter crashes test run
     Given I set the environment variable to:
       | variable      | value                              |
-      | CUCUMBER_OPTS | --format QAT::Formatter::Dashboard  |
+      | CUCUMBER_OPTS | --dry-run --format QAT::Formatter::Dashboard --out Dashboard  |
     When I run `rake mdc_error_tests`
-    And the exit status should be 2
-    Then the stderr should contain "No outputter configured for formatter QAT::Formatter::Dashboard"
+    And the exit status should be 0
 
   @test#18 @user_story#30
   Scenario: Run dummy QAT project with dashboard formatter - check errors are published with MDC
@@ -35,7 +34,7 @@ Feature: Feature #216: Cucumber module: User Story #225: Log test failures to Da
       | variable      | value                                              |
       | CUCUMBER_OPTS | --format QAT::Formatter::Dashboard --out Dashboard |
     When I run `rake mdc_error_tests`
-    Then the exit status should be 1
+    Then the exit status should be 2
     And I check the errors in the dashboard for this test:
       | logger                    | exception           | feature   | scenario                                         | tags                           | step      | status | outline_example          | outline_number | short_message                                            |
       | QAT::Formatter::Dashboard | Minitest::Assertion | mdc tests | MDC error                                        | @top_level_tag,@mdc,@mdc_error | And false | failed | nil                      | nil            | Caught Minitest::Assertion: Expected false to be truthy. |

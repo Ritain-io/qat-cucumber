@@ -80,7 +80,7 @@ end
 
 Then(/^the MDC has the values$/) do |table|
   table.headers.each do |header|
-    table.map_column! header do |value|
+    table.map_column header do |value|
       if value == 'nil'
         nil
       else

@@ -19,13 +19,24 @@ module QAT::CLI::Generator
       raise ArgumentError.new 'No project name given' unless name
       raise ArgumentError.new "The project '#{name}' already exists" if ::File.directory? name
 
-      mkdir name, opts
-      cp_r ::File.join(::File.dirname(__FILE__), '..', '..', 'project', '.'), name, opts
-      cd name, opts do
-        mkdir_p ::File.join('config', 'common'), opts
-        mkdir_p 'lib', opts
-        mkdir_p 'public', opts
+      if opts.present?
+        mkdir name, verbose: true
+        cp_r ::File.join(::File.dirname(__FILE__), '..', '..', 'project', '.'), name
+        cd name do
+          mkdir_p ::File.join('config', 'common'), verbose: true
+          mkdir_p 'lib', verbose: true
+          mkdir_p 'public', verbose: true
+        end
+      else
+        mkdir name
+        cp_r ::File.join(::File.dirname(__FILE__), '..', '..', 'project', '.'), name
+        cd name do
+          mkdir_p ::File.join('config', 'common')
+          mkdir_p 'lib'
+          mkdir_p 'public'
+        end
       end
+
 
     end
   end
