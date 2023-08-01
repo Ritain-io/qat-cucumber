@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.name        = 'qat-cucumber'
-  gem.version     = '9.0.0'
+  gem.version     = '9.0.1'
   gem.summary     = %q{QAT is a Cucumber-based toolkit for automating tests.}
   gem.description = <<-DESC
   QAT is a Cucumber-based toolkit for automating tests, including a list fo modules for:
@@ -28,7 +28,7 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = '~> 3.2'
 
   gem.add_dependency 'cucumber', '~> 8.0'
-
+  gem.add_dependency 'psych', '< 4.0'
   gem.add_dependency 'rake', '~> 13.0'
   gem.add_dependency 'activesupport', '~> 7.0'
   gem.add_development_dependency 'nokogiri', '~> 1.15'

@@ -77,7 +77,7 @@ module QAT
 
       def add_values_to_examples(cells)
         @examples_values =  cells.map do |data|
-          data[:value].to_s
+          data.value.to_s
         end
       end
 

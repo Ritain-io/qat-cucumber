@@ -44,7 +44,7 @@ module QAT
       def get_example_values(scenario_source)
         scenario_source.examples.table_body.each do |row|
           if row == scenario_source.row
-            add_values_to_examples row[:cells]
+            add_values_to_examples row.cells
           end
         end
       end
