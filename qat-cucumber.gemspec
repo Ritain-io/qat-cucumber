@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.name        = 'qat-cucumber'
-  gem.version     = '9.0.2'
+  gem.version     = '9.1.0'
   gem.summary     = %q{QAT is a Cucumber-based toolkit for automating tests.}
   gem.description = <<-DESC
   QAT is a Cucumber-based toolkit for automating tests, including a list fo modules for:
@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
     - Jenkins Integration
   DESC
   gem.email    = 'qatoolkit@readinessit.com'
-  gem.homepage = 'https://www.ritain.io'
+  gem.homepage = 'https://conkord.com/'
 
   gem.metadata    = {
       'source_code_uri'   => 'https://github.com/Ritain-io/qat-cucumber'
@@ -27,14 +27,12 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '~> 3.2'
 
-  gem.add_dependency 'cucumber', '~> 8.0'
-  gem.add_dependency 'psych', '< 4.0'
-  gem.add_dependency 'rake', '~> 13.0'
   gem.add_dependency 'activesupport', '~> 7.0'
-  gem.add_development_dependency 'nokogiri', '~> 1.15'
-
+  gem.add_dependency 'cucumber', '~> 9.2', '>= 9.2.1'
   gem.add_dependency 'qat-core', '~> 9.0'
+  gem.add_dependency 'rake', '~> 13.0'
 
-  gem.add_development_dependency 'qat-devel', '~> 9.0'
   gem.add_development_dependency 'httparty', '~> 0.21'
+  gem.add_development_dependency 'nokogiri', '~> 1.15'
+  gem.add_development_dependency 'qat-devel', '~> 9.0'
 end

@@ -1,3 +1,5 @@
+require 'active_support'
+
 module QAT
   module Cucumber
     # Helper methods for time sync
