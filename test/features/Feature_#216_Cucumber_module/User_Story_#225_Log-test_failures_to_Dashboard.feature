@@ -28,7 +28,7 @@ Feature: Feature #216: Cucumber module: User Story #225: Log test failures to Da
     When I run `rake mdc_error_tests`
     And the exit status should be 0
 
-  @test#18 @user_story#30
+  @test#18 @user_story#30 @elasticsearch
   Scenario: Run dummy QAT project with dashboard formatter - check errors are published with MDC
     Given I set the environment variable to:
       | variable      | value                                              |

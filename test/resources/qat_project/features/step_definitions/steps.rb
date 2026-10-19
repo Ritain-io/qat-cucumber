@@ -79,27 +79,21 @@ Given /^there is(n't| not)? a "([^"]*)" file in tmp folder$/ do |negated, file|
 end
 
 Then(/^the MDC has the values$/) do |table|
-  table.headers.each do |header|
-    table.map_column header do |value|
-      if value == 'nil'
-        nil
-      else
-
-        if ['tags', 'outline_example'].include? header and value
-          value = value.split ','
-        end
-
-        value = value.to_i if header == 'outline_number'
-
-        value
-      end
-    end
-  end
-
   table.hashes.each do |line|
     line.each do |key, value|
-      log.debug "Key '#{key}' - Expected '#{value}', Actual '#{Log4r::MDC.get_context[key]}'"
-      assert_equal value, Log4r::MDC.get_context[key]
+      expected = if value == 'nil'
+                   nil
+                 elsif ['tags', 'outline_example'].include?(key)
+                   value.split(',')
+                 elsif key == 'outline_number'
+                   value.to_i
+                 else
+                   value
+                 end
+
+      actual = Log4r::MDC.get_context[key]
+      log.debug "Key '#{key}' - Expected '#{expected}', Actual '#{actual}'"
+      assert_equal expected, actual
     end
   end
 end
