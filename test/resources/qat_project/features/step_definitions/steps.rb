@@ -69,7 +69,7 @@ Given /^I save a "([^"]*)" file in tmp folder$/ do |file|
 end
 
 Given /^there is(n't| not)? a "([^"]*)" file in tmp folder$/ do |negated, file|
-  exists = File.exists? File.join(QAT[:tmp_folder], file)
+  exists = File.exist? File.join(QAT[:tmp_folder], file)
 
   if negated
     refute exists
