@@ -25,15 +25,11 @@ When(/^I register Jenkins variables$/) do
 end
 
 Then(/^the MDC has the values$/) do |table|
-  table.headers.each do |header|
-    table.map_column header do |value|
-      value == 'nil' ? nil : value
-    end
-  end
-
   table.hashes.each do |line|
     line.each do |key, value|
-      assert_equal value, Log4r::MDC.get_context[key]
+      expected = value == 'nil' ? nil : value
+      actual = Log4r::MDC.get_context[key]
+      expected.nil? ? assert_nil(actual) : assert_equal(expected, actual)
     end
   end
 end
