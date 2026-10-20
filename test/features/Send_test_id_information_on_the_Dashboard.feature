@@ -12,6 +12,7 @@ Feature: Feature#216: Cucumber module: User Story #225: Log test failures to Das
       | CUCUMBER_FORMAT |       |
       | CUCUMBER_OPTS   |       |
 
+  # Needs elasticsearch running for last step to pass
   Scenario: Send error data to Dashboard
     Given I set the environment variable to:
       | variable      | value                                              |
@@ -20,7 +21,7 @@ Feature: Feature#216: Cucumber module: User Story #225: Log test failures to Das
     Then the exit status should be 1
     And I check the errors in the dashboard for this test:
       | logger                    | exception           | feature                 | scenario                                                  | tags                                             | step      | outline_example          | outline_number | short_message                                            |
-      | QAT::Formatter::Dashboard | Minitest::Assertion | mdc with test ids tests | MDC error with ids                                        | @top_level_tag,@mdc_with_ids,@mdc_with_ids_error | And false |      nil                 | nil            | Caught Minitest::Assertion: Expected false to be truthy. |
+      | QAT::Formatter::Dashboard | Minitest::Assertion | mdc with test ids tests | MDC error with ids                                        | @top_level_tag,@mdc_with_ids,@mdc_with_ids_error | And false | nil                      | nil            | Caught Minitest::Assertion: Expected false to be truthy. |
       | QAT::Formatter::Dashboard | Minitest::Assertion | mdc with test ids tests | MDC error in outline with ids                             | @top_level_tag,@mdc_with_ids,@mdc_with_ids_error | And false | 1,temp,another           | 1              | Caught Minitest::Assertion: Expected false to be truthy. |
       | QAT::Formatter::Dashboard | Minitest::Assertion | mdc with test ids tests | MDC error in outline with ids                             | @top_level_tag,@mdc_with_ids,@mdc_with_ids_error | And false | 2,temp,parameter         | 2              | Caught Minitest::Assertion: Expected false to be truthy. |
       | QAT::Formatter::Dashboard | Minitest::Assertion | mdc with test ids tests | MDC with multiple outline tables with ids - all enabled   | @top_level_tag,@mdc_with_ids,@mdc_with_ids_error | And false | 1,temp,another           | 1              | Caught Minitest::Assertion: Expected false to be truthy. |
@@ -30,7 +31,6 @@ Feature: Feature#216: Cucumber module: User Story #225: Log test failures to Das
       | QAT::Formatter::Dashboard | Minitest::Assertion | mdc with test ids tests | MDC with multiple outline tables with ids - some disabled | @top_level_tag,@mdc_with_ids,@mdc_with_ids_error | And false | 1,temp,another           | 1              | Caught Minitest::Assertion: Expected false to be truthy. |
       | QAT::Formatter::Dashboard | Minitest::Assertion | mdc with test ids tests | MDC with multiple outline tables with ids - some disabled | @top_level_tag,@mdc_with_ids,@mdc_with_ids_error | And false | 2,temp,parameter         | 2              | Caught Minitest::Assertion: Expected false to be truthy. |
       | QAT::Formatter::Dashboard | Minitest::Assertion | mdc with test ids tests | MDC with multiple outline tables with ids - some disabled | @top_level_tag,@mdc_with_ids,@mdc_with_ids_error | And false | 1,temp,yet_another       | 1              | Caught Minitest::Assertion: Expected false to be truthy. |
-
 
   Scenario: Run dummy QAT project with console formatter - check MDC is set
     Given I set the environment variable to:
