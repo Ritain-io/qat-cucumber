@@ -34,5 +34,5 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency 'httparty', '~> 0.21'
   gem.add_development_dependency 'nokogiri', '~> 1.15'
-  gem.add_development_dependency 'qat-devel', '~> 9.0'
+  gem.add_development_dependency 'qat-devel', '~> 9.1'
 end
