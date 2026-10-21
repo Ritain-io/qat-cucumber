@@ -28,7 +28,7 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = '~> 3.2'
 
   gem.add_dependency 'activesupport', '~> 7.0'
-  gem.add_dependency 'cucumber', '~> 9.2', '>= 9.2.1'
+  gem.add_dependency 'cucumber', '~> 10.0', '<= 10.1.0'
   gem.add_dependency 'qat-core', '~> 9.0'
   gem.add_dependency 'rake', '~> 13.0'
 
