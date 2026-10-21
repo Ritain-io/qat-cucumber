@@ -24,9 +24,10 @@ namespace :qat do
 
     desc 'Run all test scenarios containing given tags'
     task :tags, :tags do |_, params|
-      tags = params[:tags].is_a?(String) ? [params[:tags]] : params[:tags].to_a
+      tags = params[:tags].is_a?(String) ? params[:tags].split(',') : params[:tags].to_a
+      tags = tags.map(&:strip).reject(&:empty?)
       raise ArgumentError.new "A tag is needed to execute the task!" unless tags.any?
-      ENV['CUCUMBER_OPTS'] = "#{ENV['CUCUMBER_OPTS']} --tags #{tags.join(',')}"
+      ENV['CUCUMBER_OPTS'] = "#{ENV['CUCUMBER_OPTS']} --tags '#{tags.join(' or ')}'"
       Cucumber::Rake::Task.new('run', 'Run all test scenarios containing given tags') do |task|
         task.bundler = false
       end.runner.run

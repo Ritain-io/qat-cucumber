@@ -17,7 +17,7 @@ module QAT
         logger_env_config = ENV['QAT_LOGGER_CONFIG']
 
         if logger_env_config
-          raise InvalidConfiguration.new "Configuration file for logger does not exist: '#{logger_env_config}'" unless File.exists?(logger_env_config.to_s)
+          raise InvalidConfiguration.new "Configuration file for logger does not exist: '#{logger_env_config}'" unless File.exist?(logger_env_config.to_s)
           logger_env_config
         else
           validate_logger_yaml_config(configuration)

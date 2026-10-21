@@ -19,6 +19,7 @@ Feature: Feature #217: Jenkins module
     And I have the following environment variables
       | BUILD_NUMBER | BUILD_URL | NODE_NAME | JOB_NAME | SVN_REVISION | GIT_COMMIT |
       | 123          | localhost | master    | tests    | 1234578      | 123abc     |
+    When I load the "qat/jenkins.rb" file
     When I register Jenkins variables
     Then the MDC has the values
       | BUILD_NUMBER | BUILD_URL | NODE_NAME | JOB_NAME | SVN_REVISION | GIT_COMMIT |
@@ -30,6 +31,7 @@ Feature: Feature #217: Jenkins module
     And I have the following environment variables
       | BUILD_NUMBER | BUILD_URL | NODE_NAME | JOB_NAME | SVN_REVISION | GIT_COMMIT |
       | 123          | localhost | master    | tests    | 1234578      | 123abc     |
+    When I load the "qat/jenkins.rb" file
     When I register Jenkins variables with options
       | ignore       |
       | SVN_REVISION |
@@ -43,6 +45,7 @@ Feature: Feature #217: Jenkins module
     And I have the following environment variables
       | BUILD_NUMBER | BUILD_URL | NODE_NAME | JOB_NAME | SVN_REVISION | GIT_COMMIT | TEST_ENV |
       | 123          | localhost | master    | tests    | 1234578      | 123abc     | QA_1     |
+    When I load the "qat/jenkins.rb" file
     When I register Jenkins variables with options
       | add      |
       | TEST_ENV |
@@ -56,6 +59,7 @@ Feature: Feature #217: Jenkins module
     And I have the following environment variables
       | BUILD_NUMBER | BUILD_URL | NODE_NAME | JOB_NAME | SVN_REVISION | GIT_COMMIT | TEST_ENV |
       | 123          | localhost | master    | tests    | 1234578      | 123abc     | QA_1     |
+    When I load the "qat/jenkins.rb" file
     When I register Jenkins variables with options
       | ignore       | add      |
       | SVN_REVISION | TEST_ENV |

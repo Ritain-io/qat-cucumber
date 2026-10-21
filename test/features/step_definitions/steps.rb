@@ -1,14 +1,8 @@
-And(/^Then the HTML report contains a video tag linked to the given file$/) do
-  @doc = Nokogiri::HTML(File.open(::File.join(::File.dirname(__FILE__), '..', '..', 'tmp', 'aruba', 'project', 'public', 'index.html')))
-  raise "Video has not generated" unless @doc.xpath("//video")
-  raise "Video media type not found" unless @doc.xpath("//source/@src")
-end
+Then(/^the HTML report includes the video attachment as base64$/) do
+  report = File.read(File.join(File.dirname(__FILE__), '..', '..', 'tmp', 'aruba', 'project', 'public', 'index.html'))
 
-And(/^The video can be downloaded$/) do
-  assert_equal "test_embed_video.mkv", @doc.xpath("//div[@id='video_div_0']/a/@href").to_s
-  assert_equal "test_embed_video.mkv", @doc.xpath("//div[@id='video_div_0']/a/@download").to_s
+  assert_match(/"body":"[A-Za-z0-9+\/=]+","contentEncoding":"BASE64","mediaType":"video\/x-matroska"/, report)
 end
-
 
 And(/^Then the XML report for JUnit and XUnit contains a time tag with 6 decimal numbers$/) do
   @doc = Nokogiri::HTML(File.open(::File.join(::File.dirname(__FILE__), '..', '..', 'tmp', 'aruba', 'project', 'public', 'TEST-features-true_assertions.xml')))

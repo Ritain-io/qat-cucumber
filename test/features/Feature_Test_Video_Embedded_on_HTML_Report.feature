@@ -11,7 +11,5 @@ Feature: Complete test id information report
       | CUCUMBER_FORMAT |       |
       | CUCUMBER_OPTS   |       |
     When I run `rake qat:test:run`
-    And Then the HTML report contains a video tag linked to the given file
-    #The video can be downloaded but by doing the new attach  method we cannot generate the html as in previous build
-   # And The video can be downloaded
+    Then the HTML report includes the video attachment as base64
     And the exit status should be 0

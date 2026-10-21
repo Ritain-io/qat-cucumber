@@ -25,8 +25,7 @@ Feature: Complete test id information report
     """
     {
       "max": 4,
-      "untagged": {
-      },
+      "untagged": {},
       "mapping": {
         "1": {
           "name": "example 3 scenario 2",

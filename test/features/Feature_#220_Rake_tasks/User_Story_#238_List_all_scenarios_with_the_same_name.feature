@@ -27,8 +27,7 @@ Feature: Feature #220: Rake tasks; User Story #238: List all duplicated names fo
         "features/some_folder/example2.feature:5": "this scenario also has tags",
         "features/some_folder/example2.feature:11": "this scenario outline has tags"
       },
-      "repeated": {
-      }
+      "repeated": {}
     }
     """
     And the exit status should be 0
@@ -83,10 +82,8 @@ Feature: Feature #220: Rake tasks; User Story #238: List all duplicated names fo
     Then the output should contain:
     """
     {
-      "scenarios": {
-      },
-      "repeated": {
-      }
+      "scenarios": {},
+      "repeated": {}
     }
     """
     And the exit status should be 0
@@ -112,8 +109,7 @@ Feature: Feature #220: Rake tasks; User Story #238: List all duplicated names fo
         "features/example2.feature:4": "this scenario has tags",
         "features/example2.feature:9": "this scenario outline has no tags"
       },
-      "repeated": {
-      }
+      "repeated": {}
     }
     """
     And the exit status should be 0
