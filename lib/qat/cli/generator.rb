@@ -10,7 +10,7 @@ module QAT::CLI
       QAT::CLI::Generator::Project.new(@stdin, @stdout, @stderr, @kernel).run! name, @sub_options
 
       if @options.has_key? :modules
-        FileUtils.cd name, @sub_options do
+        FileUtils.cd name do
           add_modules(@options[:modules])
         end
       end

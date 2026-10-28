@@ -18,8 +18,7 @@ Feature: Feature #220: Rake tasks; User Story #237: List scenarios by tag
         "features/tests.feature:5": "true",
         "features/tests.feature:10": "Many trues"
       },
-      "repeated": {
-      }
+      "repeated": {}
     }
     """
     And the exit status should be 0

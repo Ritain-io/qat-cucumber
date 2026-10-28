@@ -27,8 +27,7 @@ Feature: Feature #220: Rake tasks; User Story #239: List all scenarios without t
     Then the output should contain:
     """
     {
-      "untagged": {
-      },
+      "untagged": {},
     """
     And the exit status should be 0
 
@@ -40,7 +39,6 @@ Feature: Feature #220: Rake tasks; User Story #239: List all scenarios without t
     Then the output should match:
     """
     {
-      "untagged": {
-      },
+      "untagged": {},
     """
     And the exit status should be 0

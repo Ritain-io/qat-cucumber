@@ -23,7 +23,7 @@ namespace :qat do
 
     desc 'Generates the test id report in JSON'
     task :report_test_ids do
-      FileUtils.mkdir('public') unless File.exists?(File.join(Dir.pwd, 'public'))
+      FileUtils.mkdir('public') unless File.exist?(File.join(Dir.pwd, 'public'))
       ENV['CUCUMBER_OPTS'] = nil
       Cucumber::Rake::Task.new('test_ids', 'Generates test ids as tags for tests without test id') do |task|
         task.bundler       = false

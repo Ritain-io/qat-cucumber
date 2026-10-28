@@ -23,10 +23,8 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
         "this scenario also has tags": "features/some_folder/example2.feature:5",
         "this scenario outline has tags": "features/some_folder/example2.feature:11"
       },
-      "mapping": {
-      },
-      "duplicate": {
-      }
+      "mapping": {},
+      "duplicate": {}
     }
     """
     And the exit status should be 0
@@ -43,7 +41,10 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     Then the output should contain:
     """
     Giving test ids to scenarios:
-    {"features/example1.feature":[8,13],"features/some_folder/example2.feature":[5,11]}
+    {
+     "features/example1.feature": [  8,  13],
+     "features/some_folder/example2.feature": [  5,  11]
+    }
     Editing file features/example1.feature @ line 7.
     Editing file features/example1.feature @ line 12.
     Editing file features/some_folder/example2.feature @ line 4.
@@ -59,10 +60,8 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
         "this scenario also has tags": "features/some_folder/example2.feature:5",
         "this scenario outline has tags": "features/some_folder/example2.feature:11"
       },
-      "mapping": {
-      },
-      "duplicate": {
-      }
+      "mapping": {},
+      "duplicate": {}
     }
     """
     And the exit status should be 0
@@ -79,7 +78,10 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     Then the output should contain:
     """
     Giving test ids to scenarios:
-    {"features/example1.feature":[8,13],"features/some_folder/example2.feature":[5,11]}
+    {
+     "features/example1.feature": [  8,  13],
+     "features/some_folder/example2.feature": [  5,  11]
+    }
     Editing file features/example1.feature @ line 7.
     Editing file features/example1.feature @ line 12.
     Editing file features/some_folder/example2.feature @ line 4.
@@ -90,8 +92,7 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     """
     {
       "max": 4,
-      "untagged": {
-      },
+      "untagged": {},
       "mapping": {
         "1": {
           "name": "this scenario has tags",
@@ -110,8 +111,7 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
           "path": "features/some_folder/example2.feature:11"
         }
       },
-      "duplicate": {
-      }
+      "duplicate": {}
     }
     """
     And the exit status should be 0
@@ -140,8 +140,7 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
           "path": "features/example2.feature:4"
         }
       },
-      "duplicate": {
-      }
+      "duplicate": {}
     }
     """
     And the exit status should be 0
@@ -158,7 +157,10 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     Then the output should contain:
     """
     Giving test ids to scenarios:
-    {"features/example1.feature":[8,13],"features/example2.feature":[9]}
+    {
+     "features/example1.feature": [  8,  13],
+     "features/example2.feature": [  9]
+    }
     Editing file features/example1.feature @ line 7.
     Editing file features/example1.feature @ line 12.
     Editing file features/example2.feature @ line 8.
@@ -178,8 +180,7 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
           "path": "features/example2.feature:4"
         }
       },
-      "duplicate": {
-      }
+      "duplicate": {}
     }
     """
     And the exit status should be 0
@@ -196,7 +197,10 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     And the output should contain:
     """
     Giving test ids to scenarios:
-    {"features/example1.feature":[8,13],"features/example2.feature":[9]}
+    {
+     "features/example1.feature": [  8,  13],
+     "features/example2.feature": [  9]
+    }
     Editing file features/example1.feature @ line 7.
     Editing file features/example1.feature @ line 12.
     Editing file features/example2.feature @ line 8.
@@ -206,8 +210,7 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     """
     {
       "max": 26,
-      "untagged": {
-      },
+      "untagged": {},
       "mapping": {
         "23": {
           "name": "this scenario also has no tags",
@@ -226,8 +229,7 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
           "path": "features/example2.feature:10"
         }
       },
-      "duplicate": {
-      }
+      "duplicate": {}
     }
     """
     And the exit status should be 0
@@ -245,12 +247,9 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     """
     {
       "max": 0,
-      "untagged": {
-      },
-      "mapping": {
-      },
-      "duplicate": {
-      }
+      "untagged": {},
+      "mapping": {},
+      "duplicate": {}
     }
     """
     And the exit status should be 0
@@ -272,12 +271,9 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
     """
     {
       "max": 0,
-      "untagged": {
-      },
-      "mapping": {
-      },
-      "duplicate": {
-      }
+      "untagged": {},
+      "mapping": {},
+      "duplicate": {}
     }
     """
     And the exit status should be 0
@@ -297,10 +293,8 @@ Feature: Feature #220: Rake tasks; User Story #235: Automatic generation of test
       "untagged": {
         "Empty Scenario": "features/example1.feature:3"
       },
-      "mapping": {
-      },
-      "duplicate": {
-      }
+      "mapping": {},
+      "duplicate": {}
     }
     """
     And the exit status should be 0
